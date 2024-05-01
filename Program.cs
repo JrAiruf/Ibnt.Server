@@ -79,7 +79,7 @@ app.UseCors(
     });
 
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+var port = Environment.GetEnvironmentVariable("RAILWAY_TCP_APPLICATION_PORT") ?? "8081";
 builder.WebHost.UseUrls($"http://localhost:{port}");
 
 ApplyMigrations(new IbntDbContext());

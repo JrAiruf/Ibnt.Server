@@ -13,7 +13,7 @@ namespace Ibnt.Server.Infra.Data
         {
             if (!options.IsConfigured)
             {
-                options.UseNpgsql(ApiConfiguration.ConnectionStringValue());
+                options.UseSqlite(ApiConfiguration.ConnectionStringValue());
             }
         }
 
