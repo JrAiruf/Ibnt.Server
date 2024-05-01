@@ -80,7 +80,7 @@ app.UseCors(
 
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
-builder.WebHost.UseUrls($"http://localhost:{port}");
+builder.WebHost.UseUrls($"http://*[::1]:{port}");
 
 ApplyMigrations(new IbntDbContext());
 
