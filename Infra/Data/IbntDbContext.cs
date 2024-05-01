@@ -13,7 +13,8 @@ namespace Ibnt.Server.Infra.Data
         {
             if (!options.IsConfigured)
             {
-                options.UseSqlite(ApiConfiguration.ConnectionStringValue());
+                //options.UseSqlite("datasource=ibntDb");
+                options.UseNpgsql(ApiConfiguration.ConnectionStringValue());
             }
         }
 
