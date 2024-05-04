@@ -26,7 +26,6 @@ namespace Ibnt.Server.Infra.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             //USERS
             modelBuilder.Entity<MemberEntity>(member =>
             {
@@ -53,10 +52,13 @@ namespace Ibnt.Server.Infra.Data
                          reaction => reaction
                         .HasKey(r => new { r.MemberId, r.EventId }
                         ));
-            modelBuilder.Entity<ReactionEntity>(
-                reaction => reaction.Property(r => r.MemberId).HasConversion(typeof(string)));
-            modelBuilder.Entity<ReactionEntity>(
-                reaction => reaction.Property(r => r.EventId).HasConversion(typeof(string)));
+            modelBuilder.Entity<ReactionEntity>(reaction =>
+            {
+                reaction.Property(r => r.MemberId).HasConversion(typeof(string));
+                reaction.Property(r => r.EventId).HasConversion(typeof(string));
+            }
+            );
+
         }
     }
 }
