@@ -32,14 +32,14 @@ namespace Ibnt.Server.Infra.Data
             {
                 member.HasOne(m => m.Credential)
                       .WithOne(auth => auth.Member);
-                member.Property(m => m.Id).HasConversion(typeof(Guid), typeof(string));
+                member.Property(m => m.Id).HasConversion(typeof(string));
 
             });
 
             modelBuilder.Entity<AuthCredentialEntity>(auth =>
             {
                 auth.HasKey(a => a.Email);
-                auth.Property(c => c.MemberId).HasConversion(typeof(Guid), typeof(Guid));
+                auth.Property(c => c.MemberId).HasConversion(typeof(string));
             });
 
             //TIMELINE
