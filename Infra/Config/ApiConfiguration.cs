@@ -18,13 +18,13 @@ namespace Ibnt.Server.Infra.Config
 
         public static void ApplyMigrations(IbntDbContext context)
         {
-            if (context.Database.EnsureCreated() && !context.Database.GetPendingMigrations().Any())
+            if (context.Database.EnsureCreated() && context.Database.GetPendingMigrations().Any())
             {
-                return;
+                context.Database.Migrate();
             }
             else
             {
-                context.Database.Migrate();
+                return;
             }
         }
     }
