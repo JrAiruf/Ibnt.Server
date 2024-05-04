@@ -43,10 +43,17 @@ namespace Ibnt.Server.Infra.Data
             });
 
             //TIMELINE
+            modelBuilder.Entity<EventEntity>(eventEntity =>
+            {
+                eventEntity.Property(e => e.Id).HasConversion(typeof(string));
+            });
             modelBuilder.Entity<ReactionEntity>(
                          reaction => reaction
                         .HasKey(r => new { r.MemberId, r.EventId }
                         ));
+            modelBuilder.Entity<ReactionEntity>(
+                r => r.Property(r => new { r.MemberId, r.EventId }).HasConversion(typeof(string))
+                );
         }
     }
 }
