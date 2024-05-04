@@ -4,6 +4,7 @@ using Ibnt.Server.Domain.Entities.TimeLine;
 using Ibnt.Server.Domain.Entities.Users;
 using Ibnt.Server.Infra.Config;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace Ibnt.Server.Infra.Data
 {
@@ -31,12 +32,14 @@ namespace Ibnt.Server.Infra.Data
             {
                 member.HasOne(m => m.Credential)
                       .WithOne(auth => auth.Member);
+                member.Property(m => m.Id).HasConversion(typeof(string), typeof(Guid));
 
             });
 
             modelBuilder.Entity<AuthCredentialEntity>(auth =>
             {
                 auth.HasKey(a => a.Email);
+                auth.Property(c => c.MemberId).HasConversion(typeof(string), typeof(Guid));
             });
 
             //TIMELINE
