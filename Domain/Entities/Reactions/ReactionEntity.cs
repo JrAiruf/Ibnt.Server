@@ -32,7 +32,7 @@ namespace Ibnt.Server.Domain.Entities.Reactions
 
         public void ChangeEventId(Guid? eventId)
         {
-            if (eventId.HasValue)
+            if (!eventId.HasValue)
             {
                 throw new TimeLineContentException("A propriedade eventId não pode ser vazia ou nula.");
             }
