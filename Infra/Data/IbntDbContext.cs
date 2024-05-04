@@ -10,15 +10,20 @@ namespace Ibnt.Server.Infra.Data
 {
     public class IbntDbContext : DbContext
     {
+        private readonly IApiConfiguration _apiConfig;
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             if (!options.IsConfigured)
             {
-                IApiConfiguration apiConfig = new ApiConfiguration(this);
-                //options.UseSqlite(apiConfig.ConnectionStringValue());
-                options.UseNpgsql(apiConfig.ConnectionStringValue());
-                apiConfig.ApplyMigrations();
+                options.UseNpgsql(_apiConfig.ConnectionStringValue());
             }
+        }
+        public IbntDbContext()
+        {
+            _apiConfig = new ApiConfiguration(this);
+            //options.UseSqlite(apiConfig.ConnectionStringValue());
+            _apiConfig.ApplyMigrations();
+
         }
 
         public DbSet<MemberEntity> Members { get; set; }
