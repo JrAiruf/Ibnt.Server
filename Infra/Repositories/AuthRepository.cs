@@ -43,22 +43,14 @@ namespace Ibnt.Server.Infra.Repositories
             var credential = await _context.Credentials.FindAsync(email);
             if (_hashService.CompareValue(password, credential.Password))
             {
+                var currentUser = await _context.Members.Where(m => m.Credential.Email == email).FirstOrDefaultAsync();
+                credential.CHangeMemberId(currentUser.Id);
                 return credential;
             }
             else
             {
                 return null;
             }
-        }
-
-        Task<IEnumerable<AuthCredentialEntity>> IAuthRepository.GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<AuthCredentialEntity> IAuthRepository.GetCredential(string email, string password)
-        {
-            throw new NotImplementedException();
         }
     }
 }

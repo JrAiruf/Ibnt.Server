@@ -21,7 +21,6 @@ namespace Ibnt.Server.Domain.Entities.Users
             ChangeEmail(email);
             ChangePassword(password);
         }
-
         public AuthCredentialEntity() { }
         public string Email { get; private set; }
         public string Password { get; private set; }
@@ -65,5 +64,15 @@ namespace Ibnt.Server.Domain.Entities.Users
             }
             Role = role;
         }
+
+        public void CHangeMemberId(Guid? memberId)
+        {
+            if (!memberId.HasValue)
+            {
+                throw new AuthCredentialEntityException("A propriedade memberId não pode ser vazia ou nula.");
+            }
+            MemberId = memberId;
+        }
+
     }
 }

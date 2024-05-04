@@ -8,6 +8,7 @@ namespace Ibnt.Server.Application.Extensions
         public static AuthResponseDto AsDto(this AuthCredentialEntity auth)
         {
             var authDto = new AuthResponseDto();
+            authDto.Id = auth.MemberId.Value;
             authDto.Email = auth.Email;
             authDto.Role = auth.Role;
             authDto.Token = auth.Token ?? "";

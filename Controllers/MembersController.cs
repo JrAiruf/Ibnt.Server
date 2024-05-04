@@ -3,12 +3,13 @@ using Ibnt.Server.Application.Extensions;
 using Ibnt.Server.Application.Interfaces;
 using Ibnt.Server.Domain.Entities.Users;
 using Ibnt.Server.Domain.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ibnt.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class MembersController : ControllerBase
     {
         private readonly IMembersRepository _repository;
@@ -29,8 +30,10 @@ namespace Ibnt.API.Controllers
             {
                 AuthCredentialEntity credential = new(
                     dto.Credential.Email,
-                    _hashService.HashValue(dto.Credential.Password));
-                if(dto.Credential.Role != null)
+                    _hashService.HashValue(dto.Credential.Password)
+                    );
+
+                if (dto.Credential.Role != null)
                 {
                     credential.ChangeRole(dto.Credential.Role);
                 }
@@ -66,6 +69,7 @@ namespace Ibnt.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -81,6 +85,7 @@ namespace Ibnt.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "admin,user")]
         public async Task<IActionResult> GetById(Guid id)
         {
             try

@@ -1,15 +1,14 @@
 using Ibnt.Server.Application.Interfaces;
+using Ibnt.Server.Infra.Config;
 using Ibnt.Server.Infra.Data;
 using Ibnt.Server.Infra.Repositories;
 using Ibnt.Server.Infra.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 builder.Services.AddDbContext<IbntDbContext>();
 
@@ -25,15 +24,46 @@ builder.Services.AddScoped<IHashService, HashService>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 
-void ApplyMigrations(IbntDbContext context)
-{
-    if (context.Database.GetPendingMigrations().Any())
-    {
-        context.Database.Migrate();
-    }
-}
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+builder.WebHost.UseUrls($"http://*[::1]:{port}");
+
+ApiConfiguration.ApplyMigrations(new IbntDbContext());
 
 var secretKey = Encoding.ASCII.GetBytes(Secrets.SecretKey);
+
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+            },
+            new List<String>()
+        }
+    });
+});
+
 builder.Services.AddAuthentication(
     options =>
     {
@@ -51,16 +81,9 @@ builder.Services.AddAuthentication(
             IssuerSigningKey = new SymmetricSecurityKey(secretKey),
             ValidateIssuer = false,
             ValidateAudience = false,
+
         };
     });
-
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
-options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
-builder.Services.AddControllers();
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -78,11 +101,9 @@ app.UseCors(
         .AllowAnyOrigin();
     });
 
+app.UseAuthentication();
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
-builder.WebHost.UseUrls($"http://*[::1]:{port}");
-
-ApplyMigrations(new IbntDbContext());
+app.UseRouting();
 
 app.UseAuthorization();
 

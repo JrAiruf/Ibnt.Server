@@ -1,4 +1,7 @@
-﻿namespace Ibnt.Server.Infra.Config
+﻿using Ibnt.Server.Infra.Data;
+using Microsoft.EntityFrameworkCore;
+
+namespace Ibnt.Server.Infra.Config
 {
     public static class ApiConfiguration
     {
@@ -9,7 +12,16 @@
 
         public static string ConnectionStringValue()
         {
-            return $"host={HOST}:{PORT};userid={USER};password={PASSWORD}";
+            //return $"host={HOST}:{PORT};userid={USER};password={PASSWORD}";
+            return "datasource=ibntDb";
+        }
+
+        public static void ApplyMigrations(IbntDbContext context)
+        {
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
         }
     }
 }
