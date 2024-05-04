@@ -15,6 +15,7 @@ namespace Ibnt.Server.Infra.Repositories
 
         public async Task Create(ReactionEntity reaction)
         {
+            _context.Reactions.AsNoTracking();
             await _context.Reactions.AddAsync(reaction);
             await _context.SaveChangesAsync();
         }
