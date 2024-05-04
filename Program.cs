@@ -27,8 +27,6 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
 builder.WebHost.UseUrls($"http://*[::1]:{port}");
 
-//ApiConfiguration.ApplyMigrations(new IbntDbContext());
-
 var secretKey = Encoding.ASCII.GetBytes(Secrets.SecretKey);
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
