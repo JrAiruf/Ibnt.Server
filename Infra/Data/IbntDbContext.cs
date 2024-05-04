@@ -17,6 +17,7 @@ namespace Ibnt.Server.Infra.Data
                 IApiConfiguration apiConfig = new ApiConfiguration(this);
                 //options.UseSqlite(apiConfig.ConnectionStringValue());
                 options.UseNpgsql(apiConfig.ConnectionStringValue());
+                apiConfig.ApplyMigrations();
             }
         }
 
