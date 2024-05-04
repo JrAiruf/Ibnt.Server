@@ -46,6 +46,8 @@ namespace Ibnt.Server.Infra.Data
             modelBuilder.Entity<EventEntity>(eventEntity =>
             {
                 eventEntity.Property(e => e.Id).HasConversion(typeof(string));
+                eventEntity.Property(e => e.PostDate).HasConversion(typeof(string));
+                eventEntity.Property(e => e.Date).HasConversion(typeof(string));
             });
             modelBuilder.Entity<ReactionEntity>(
                          reaction => reaction
