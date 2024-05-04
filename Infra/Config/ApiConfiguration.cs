@@ -28,4 +28,4 @@ namespace Ibnt.Server.Infra.Config
             }
         }
     }
-}
+
