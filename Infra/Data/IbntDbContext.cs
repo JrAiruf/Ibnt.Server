@@ -4,26 +4,17 @@ using Ibnt.Server.Domain.Entities.TimeLine;
 using Ibnt.Server.Domain.Entities.Users;
 using Ibnt.Server.Infra.Config;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace Ibnt.Server.Infra.Data
 {
     public class IbntDbContext : DbContext
     {
-        private readonly IApiConfiguration _apiConfig;
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             if (!options.IsConfigured)
             {
-                options.UseNpgsql(_apiConfig.ConnectionStringValue());
+                options.UseNpgsql(ApiConfiguration.ConnectionStringValue());
             }
-        }
-        public IbntDbContext()
-        {
-            _apiConfig = new ApiConfiguration(this);
-            //options.UseSqlite(apiConfig.ConnectionStringValue());
-            _apiConfig.ApplyMigrations();
-
         }
 
         public DbSet<MemberEntity> Members { get; set; }

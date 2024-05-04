@@ -12,6 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<IbntDbContext>();
 
+var context = builder.Configuration.Get<IbntDbContext>();
+
+if(context != null)
+{
+    ApiConfiguration.ApplyMigrations(context);
+}
+
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
 builder.Services.AddScoped<IMembersRepository, MembersRepository>();
