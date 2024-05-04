@@ -2,11 +2,15 @@
 using Ibnt.Server.Application.Extensions;
 using Ibnt.Server.Application.Interfaces;
 using Ibnt.Server.Domain.Entities.Reactions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
+
 namespace Ibnt.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+    [Route("api/[controller]")]
     public class ReactionsController : ControllerBase
     {
         private readonly IReactionsRepository _repository;
@@ -19,30 +23,51 @@ namespace Ibnt.API.Controllers
         public async Task<IActionResult> Create([FromBody] CreateReactionDto dto)
         {
 
-            ReactionEntity reaction = new();
+            try
+            {
+                ReactionEntity reaction = new();
 
-            reaction.ChangeName("Glória");
-            reaction.ChangeMemberId(dto.MemberId);
-            reaction.ChangeEventId(dto.EventId);
+                reaction.ChangeName("Glória");
+                reaction.ChangeMemberId(dto.MemberId);
+                reaction.ChangeEventId(dto.EventId);
 
-            await _repository.Create(reaction);
+                await _repository.Create(reaction);
 
-            return Ok();
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var databaseReactions = await _repository.GetAll();
-            var reactionsList = databaseReactions.Select(r => r.AsDto()).ToList();
-            return Ok(reactionsList);
+            try
+            {
+                var databaseReactions = await _repository.GetAll();
+                var reactionsList = databaseReactions.Select(r => r.AsDto()).ToList();
+                return Ok(reactionsList);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
         }
         [HttpGet("{eventId}")]
         public async Task<IActionResult> GetReactionsByEventId(Guid eventId)
         {
-            var databaseReactions = await _repository.GetReactionsByEventId(eventId);
-            var reactionsList = databaseReactions.Select(r => r.AsDto()).ToList();
-            return Ok(reactionsList);
+            try
+            {
+                var databaseReactions = await _repository.GetReactionsByEventId(eventId);
+                var reactionsList = databaseReactions.Select(r => r.AsDto()).ToList();
+                return Ok(reactionsList);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
         }
 
     }

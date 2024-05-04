@@ -19,7 +19,7 @@ namespace Ibnt.Server.Application.Extensions
                 Description = eventEntity.Description,
                 Reactions = new List<ReactionDto>()
             };
-            if(eventEntity.Reactions.Any())
+            if(eventEntity.Reactions != null)
             {
                 eventDto.Reactions = eventEntity.Reactions.Select(r => r.AsDto()).ToList();
             }

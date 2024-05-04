@@ -3,12 +3,14 @@ using Ibnt.Server.Application.Extensions;
 using Ibnt.Server.Application.Interfaces;
 using Ibnt.Server.Domain.Entities.Users;
 using Ibnt.Server.Domain.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ibnt.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _repository;
@@ -28,7 +30,9 @@ namespace Ibnt.API.Controllers
             var credentials = databaseCredentials.Select(c => c.AsListDto());
             return Ok(credentials);
         }
+
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Authenticate(AuthDto dto)
         {
             try
@@ -60,6 +64,7 @@ namespace Ibnt.API.Controllers
         }
 
         [HttpPost("new-member")]
+        [AllowAnonymous]
         public async Task<IActionResult> Create(CreateAuthDto dto)
         {
             try
@@ -70,7 +75,7 @@ namespace Ibnt.API.Controllers
                     newCredential.ChangeRole(dto.Role);
                 }
                 newCredential.ChangeEmail(dto.Email);
-                newCredential.ChangePassword(_hashService.HashValue(dto.Password));
+                newCredential.ChangePassword(_hashService.HashValue(dto.Password ?? ""));
 
                 var authResult = await _repository.Create(newCredential);
                 string token = _tokenService.GenerateToken(authResult);

@@ -16,13 +16,14 @@ namespace Ibnt.Server.Infra.Repositories
         public async Task<MemberEntity> Create(MemberEntity member)
         {
             var registeredCredential = await _context.Credentials
-              .Where(c => c.Email == member.Credential.Email)
+              .Where(c => c.Email == member.Credential!.Email)
               .FirstOrDefaultAsync();
             if (registeredCredential != null)
             {
                 throw new ExistingUserException("E-mail já cadastrado. Utilize outro e-mail para criar sua conta.");
             }
             await _context.Members.AddAsync(member);
+            await _context.Credentials.AddAsync(member.Credential!);
             await _context.SaveChangesAsync();
             var createdMember = await _context.Members.FindAsync(member.Id);
             return createdMember;
@@ -39,7 +40,14 @@ namespace Ibnt.Server.Infra.Repositories
         public async Task<MemberEntity> GetById(Guid id)
         {
             var currentMember = await _context.Members.FindAsync(id);
-            return currentMember;
+            if (currentMember != null)
+            {
+                return currentMember;
+            }
+            else
+            {
+                return null!;
+            }
         }
     }
 }
