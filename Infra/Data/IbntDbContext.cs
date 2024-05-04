@@ -52,8 +52,12 @@ namespace Ibnt.Server.Infra.Data
                         .HasKey(r => new { r.MemberId, r.EventId }
                         ));
             modelBuilder.Entity<ReactionEntity>(
-                r => r.Property(r => new { r.MemberId, r.EventId }).HasConversion(typeof(string))
-                );
+                reaction =>
+                {
+                    reaction.Property(r => r.MemberId).HasConversion(typeof(string));
+                    reaction.Property(r => r.EventId).HasConversion(typeof(string));
+                }
+                ); ;
         }
     }
 }
