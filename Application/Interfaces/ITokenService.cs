@@ -1,4 +1,4 @@
-﻿using Ibnt.Server.Domain.Entities.Users;
+﻿using Ibnt.Server.Domain.Entities.Users.Auth;
 
 namespace Ibnt.Server.Application.Interfaces
 {

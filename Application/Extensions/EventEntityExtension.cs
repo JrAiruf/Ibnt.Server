@@ -9,7 +9,7 @@ namespace Ibnt.Server.Application.Extensions
 
         public static EventDto AsDto(this EventEntity? eventEntity)
         {
-            var eventDto = new EventDto
+            return new EventDto
             {
                 Id = eventEntity!.Id,
                 Title = eventEntity.Title,
@@ -17,27 +17,22 @@ namespace Ibnt.Server.Application.Extensions
                 PostDate = eventEntity.PostDate,
                 Date = eventEntity.Date,
                 Description = eventEntity.Description,
+                Reactions = eventEntity.Reactions.Select(r => r.AsDto()).ToList()
+            };
+        }
+
+        public static EventDto AsListDto(this EventEntity eventEntity)
+        {
+            return new EventDto
+            {
+                Id = eventEntity.Id,
+                Title = eventEntity.Title,
+                ImageUrl = eventEntity.ImageUrl,
+                PostDate = eventEntity.PostDate,
+                Date = eventEntity.Date,
+                Description = eventEntity.Description,
                 Reactions = new List<ReactionDto>()
             };
-            if(eventEntity.Reactions != null)
-            {
-                eventDto.Reactions = eventEntity.Reactions.Select(r => r.AsDto()).ToList();
-            }
-            return eventDto;
-
+        }
     }
-    public static EventDto AsListDto(this EventEntity eventEntity)
-    {
-        return new EventDto
-        {
-            Id = eventEntity.Id,
-            Title = eventEntity.Title,
-            ImageUrl = eventEntity.ImageUrl,
-            PostDate = eventEntity.PostDate,
-            Date = eventEntity.Date,
-            Description = eventEntity.Description,
-            Reactions = new List<ReactionDto>()
-        };
-    }
-}
 }

@@ -8,6 +8,12 @@ namespace Ibnt.Server.Domain.Exceptions
         {
         }
     }
+    public class InvalidCredentialException : AppException
+    {
+        public InvalidCredentialException(string? message) : base(message)
+        {
+        }
+    }
 
     public class ExistingUserException : AppException
     {

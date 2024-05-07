@@ -1,8 +1,8 @@
 ﻿namespace Ibnt.Server.Application.Dtos.AuthCredentialEntity
 {
-    public class AuthDto
+    public record AuthDto
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public string Email { get; init; }
+        public string Password { get; init; }
     }
 }

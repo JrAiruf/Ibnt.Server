@@ -1,5 +1,5 @@
 ﻿using Ibnt.Server.Application.Interfaces;
-using Ibnt.Server.Domain.Entities.Users;
+using Ibnt.Server.Domain.Entities.Users.Auth;
 using Ibnt.Server.Domain.Exceptions;
 using Ibnt.Server.Infra.Data;
 using Microsoft.EntityFrameworkCore;
@@ -41,16 +41,42 @@ namespace Ibnt.Server.Infra.Repositories
         {
 
             var credential = await _context.Credentials.FindAsync(email);
+            if (credential == null)
+            {
+                throw new AuthCredentialEntityException("Error ao realizar login. Verifique os dados e tente novamente");
+            }
             if (_hashService.CompareValue(password, credential.Password))
             {
                 var currentUser = await _context.Members.Where(m => m.Credential.Email == email).FirstOrDefaultAsync();
-                credential.CHangeMemberId(currentUser.Id);
+                credential.ChangeMemberId(currentUser.Id);
                 return credential;
             }
             else
             {
                 return null;
             }
+        }
+        public async Task<RecoveryPasswordEntity?> GetCredentialByEmail(string email)
+        {
+            var credential = await _context.Credentials.FindAsync(email);
+            if (credential == null)
+            {
+                throw new AuthCredentialEntityException("Não há nehum e-mail compatível registrado.");
+            }
+            var currentUser = await _context.Members.Where(m => m.Credential.Email == email).FirstOrDefaultAsync();
+            var verificationCode = _hashService.GenerateVerificationCode(6);
+            var provisoryPassword = _hashService.GenerateVerificationCode(8);
+            var recoveryEntity = new RecoveryPasswordEntity(currentUser.FullName, verificationCode, credential.Email, provisoryPassword);
+            await _context.RecoveryPasswords.AddAsync(recoveryEntity);
+            return recoveryEntity;
+        }
+
+        public async Task UpdateCredential(AuthCredentialEntity credential)
+        {
+            var currentCredential = await _context.Credentials.FindAsync(credential.Email);
+            currentCredential.ChangePassword(_hashService.HashValue(credential.Password));
+            _context.Credentials.Update(currentCredential);
+            await _context.SaveChangesAsync();
         }
     }
 }

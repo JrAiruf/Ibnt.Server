@@ -1,10 +1,13 @@
 ﻿using Ibnt.Server.Application.Dtos.AuthCredentialEntity;
 using Ibnt.Server.Application.Extensions;
 using Ibnt.Server.Application.Interfaces;
-using Ibnt.Server.Domain.Entities.Users;
+using Ibnt.Server.Domain.Entities.Users.Auth;
 using Ibnt.Server.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RestSharp;
+using RestSharp.Serialization.Json;
+using System.Net;
 
 namespace Ibnt.API.Controllers
 {
@@ -16,11 +19,16 @@ namespace Ibnt.API.Controllers
         private readonly IAuthRepository _repository;
         private readonly IHashService _hashService;
         private readonly ITokenService _tokenService;
-        public AuthController(IAuthRepository repository, IHashService hashService, ITokenService tokenService)
+        private readonly RestClient _client;
+        public AuthController(IAuthRepository repository,
+            IHashService hashService,
+            ITokenService tokenService,
+            RestClient client)
         {
             _repository = repository;
             _hashService = hashService;
             _tokenService = tokenService;
+            _client = client;
         }
 
         [HttpGet]
@@ -44,7 +52,11 @@ namespace Ibnt.API.Controllers
                     authResult.ChangeToken(token);
                     return Ok(authResult.AsDto());
                 }
-                return Unauthorized();
+                else
+                {
+                    return Unauthorized();
+
+                }
             }
             catch (AppException exception)
             {
@@ -52,9 +64,13 @@ namespace Ibnt.API.Controllers
                 {
                     return BadRequest(exception.Message);
                 }
+                else if (exception is InvalidCredentialException)
+                {
+                    return Unauthorized(exception.Message);
+                }
                 else
                 {
-                    return Unauthorized();
+                    return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
                 }
             }
             catch (Exception exception)
@@ -70,10 +86,7 @@ namespace Ibnt.API.Controllers
             try
             {
                 AuthCredentialEntity newCredential = new();
-                if (dto.Role != null)
-                {
-                    newCredential.ChangeRole(dto.Role);
-                }
+
                 newCredential.ChangeEmail(dto.Email);
                 newCredential.ChangePassword(_hashService.HashValue(dto.Password ?? ""));
 
@@ -98,6 +111,81 @@ namespace Ibnt.API.Controllers
                 {
                     return Unauthorized();
                 }
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+
+        [HttpPost("send-recovery-code")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SendRecoveryCode([FromBody] RecoveryPasswordEmailDto dto)
+        {
+            try
+            {
+                _client.BaseUrl = new Uri("https://sender.up.railway.app");
+                var recoveryPasswordEntity = await _repository.GetCredentialByEmail(dto.Email);
+                var emailEntity = new EmailEntity(
+                    "ibnt.app@gmail.com",
+                    recoveryPasswordEntity.VerificationEmail,
+                    "IBNT",
+                    recoveryPasswordEntity.FullName,
+                    "Recuperação de Senha",
+                    $"<h1 style='text-align: center; padding-bottom: 1rem;'> Olá, {recoveryPasswordEntity.FullName}!</h1> <br> <h3 style='text-align: center; padding-bottom: 1rem;'>Seu código de recuperação é:</h3> <br> <p style='text-align: center; font-size:2rem;'>{recoveryPasswordEntity.VerificationCode}</p>"
+                    );
+
+                RestRequest request = new RestRequest(method: Method.POST);
+                request.Resource = "/api/send";
+
+                request.AddHeader("Content-Type", "application/json");
+
+                request.AddJsonBody(emailEntity);
+
+                request.RequestFormat = DataFormat.Json;
+                request.Method = Method.POST;
+
+                var response = _client.Execute(request);
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    return Ok(recoveryPasswordEntity.AsDto());
+                }
+                else
+                {
+                    return BadRequest("Erro ao enviar código de verificação.");
+                }
+            }
+            catch (AppException exception)
+            {
+                if (exception is AuthCredentialEntityException)
+                {
+                    return NotFound(exception.Message);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+                }
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+        [HttpPost("password-definition")]
+        [AllowAnonymous]
+        public async Task<IActionResult> DefinePassword([FromBody] PasswordDefinitionDto dto)
+        {
+            try
+            {
+                AuthCredentialEntity authCredentialEntity = new AuthCredentialEntity(dto.Email, dto.Password);
+                await _repository.UpdateCredential(authCredentialEntity);
+                return Ok();
+            }
+            catch (AppException exception)
+            {
+
+                return NotFound(exception.Message);
+
             }
             catch (Exception exception)
             {

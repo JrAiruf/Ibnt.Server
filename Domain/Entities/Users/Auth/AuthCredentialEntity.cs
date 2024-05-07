@@ -1,6 +1,6 @@
 ﻿using Ibnt.Server.Domain.Exceptions;
 
-namespace Ibnt.Server.Domain.Entities.Users
+namespace Ibnt.Server.Domain.Entities.Users.Auth
 {
     public class AuthCredentialEntity
     {
@@ -65,7 +65,7 @@ namespace Ibnt.Server.Domain.Entities.Users
             Role = role;
         }
 
-        public void CHangeMemberId(Guid? memberId)
+        public void ChangeMemberId(Guid? memberId)
         {
             if (!memberId.HasValue)
             {

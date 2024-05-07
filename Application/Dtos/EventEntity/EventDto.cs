@@ -3,14 +3,14 @@ using Ibnt.Server.Application.Dtos.GloryReactionEntity;
 
 namespace Ibnt.Server.Application.Dtos.EventEntity
 {
-    public class EventDto
+    public record EventDto
     {
-        public Guid Id { get; set; }
-        public string Title { get; set; }
-        public string? ImageUrl { get; set; }
-        public DateTime? PostDate { get; set; }
-        public DateTime? Date { get; set; }
-        public string Description { get; set; }
-        public List<ReactionDto>? Reactions { get; set; }
+        public Guid Id { get; init; }
+        public string Title { get; init; }
+        public string? ImageUrl { get; init; }
+        public DateTime? PostDate { get; init; }
+        public DateTime? Date { get; init; }
+        public string Description { get; init; }
+        public List<ReactionDto>? Reactions { get; init; }
     }
 }

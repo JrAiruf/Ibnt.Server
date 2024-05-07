@@ -1,10 +1,10 @@
 ﻿namespace Ibnt.Server.Application.Dtos.GloryReactionEntity
 {
-    public class ReactionDto
+    public record ReactionDto
     {
-        public string Name { get; set; }
-        public Guid MemberId { get; set; }
-        public Guid EventId { get; set; }
-        public bool Toogled { get; set; }
+        public string Name { get; init; }
+        public Guid MemberId { get; init; }
+        public Guid EventId { get; init; }
+        public bool Toogled { get; init; }
     }
 }

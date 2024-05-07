@@ -1,10 +1,10 @@
 ﻿namespace Ibnt.Server.Application.Dtos.AuthCredentialEntity
 {
-    public class AuthResponseDto
+    public record AuthResponseDto
     {
-        public Guid? Id { get; set; }
-        public string Email { get; set; }
-        public string Role { get; set; }
-        public string Token { get; set; }
+        public Guid? Id { get; init; }
+        public string Email { get; init; }
+        public string Role { get; init; }
+        public string Token { get; init; }
     }
 }

@@ -47,5 +47,13 @@ namespace Ibnt.Server.Infra.Services
             return CryptographicOperations.FixedTimeEquals(inputHash, hash);
         }
 
+        public string? GenerateVerificationCode(int codeSize)
+        {
+            var codeBaseString = Guid.NewGuid().ToString().Split("-");
+            var breakString = codeBaseString
+                .First()
+                .Substring(0, codeSize);
+            return breakString;
+        }
     }
 }

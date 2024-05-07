@@ -1,11 +1,11 @@
 ﻿namespace Ibnt.Server.Application.Dtos.EventEntity
 {
-    public class CreateEventDto
+    public record CreateEventDto
     {
-        public string Title { get; set; }
-        public DateTime? PostDate { get; set; }
-        public DateTime? Date { get; set; }
-        public string? ImageUrl { get; set; }
-        public string Description { get; set; }
+        public string Title { get; init; }
+        public DateTime? PostDate { get; init; }
+        public DateTime? Date { get; init; }
+        public string? ImageUrl { get; init; }
+        public string Description { get; init; }
     }
 }

@@ -2,27 +2,35 @@
 using Ibnt.Server.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Ibnt.Server.Infra.Data.Migrations
 {
     [DbContext(typeof(IbntDbContext))]
-    partial class IbntDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240506230533_CreatingRecoveryPasswordTable")]
+    partial class CreatingRecoveryPasswordTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.3");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("EventEntityMemberEntity", b =>
                 {
                     b.Property<string>("EventsId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(36)");
 
                     b.Property<string>("MembersId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(36)");
 
                     b.HasKey("EventsId", "MembersId");
 
@@ -34,17 +42,17 @@ namespace Ibnt.Server.Infra.Data.Migrations
             modelBuilder.Entity("Ibnt.Server.Domain.Entities.Reactions.ReactionEntity", b =>
                 {
                     b.Property<string>("MemberId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(36)");
 
                     b.Property<string>("EventId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<bool>("Toogled")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("boolean");
 
                     b.HasKey("MemberId", "EventId");
 
@@ -57,27 +65,27 @@ namespace Ibnt.Server.Infra.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(36)");
 
                     b.Property<string>("Content")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Date")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(48)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("PostDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(48)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -87,21 +95,21 @@ namespace Ibnt.Server.Infra.Data.Migrations
             modelBuilder.Entity("Ibnt.Server.Domain.Entities.Users.AuthCredentialEntity", b =>
                 {
                     b.Property<string>("Email")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("MemberId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(36)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Token")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Email");
 
@@ -115,14 +123,14 @@ namespace Ibnt.Server.Infra.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(36)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProfileImage")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -131,19 +139,17 @@ namespace Ibnt.Server.Infra.Data.Migrations
 
             modelBuilder.Entity("Ibnt.Server.Domain.Entities.Users.RecoveryPasswordEntity", b =>
                 {
-                    b.Property<string>("VerificationCode")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("FullName")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("NewPassword")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
+
+                    b.Property<string>("VerificationCode")
+                        .HasColumnType("text");
 
                     b.Property<string>("VerificationEmail")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("VerificationCode");
+                        .HasColumnType("text");
 
                     b.ToTable("RecoveryPasswords");
                 });

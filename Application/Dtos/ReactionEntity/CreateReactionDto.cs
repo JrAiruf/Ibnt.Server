@@ -1,8 +1,8 @@
 ﻿namespace Ibnt.Server.Application.Dtos.GloryReactionEntity
 {
-    public class CreateReactionDto
+    public record CreateReactionDto
     {
-        public Guid MemberId { get; set; }
-        public Guid EventId { get; set; }
+        public Guid MemberId { get; init; }
+        public Guid EventId { get; init; }
     }
 }

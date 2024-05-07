@@ -2,6 +2,7 @@
 using Ibnt.Server.Application.Extensions;
 using Ibnt.Server.Application.Interfaces;
 using Ibnt.Server.Domain.Entities.Users;
+using Ibnt.Server.Domain.Entities.Users.Auth;
 using Ibnt.Server.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

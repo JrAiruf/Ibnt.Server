@@ -1,5 +1,5 @@
 ﻿using Ibnt.Server.Application.Interfaces;
-using Ibnt.Server.Domain.Entities.Users;
+using Ibnt.Server.Domain.Entities.Users.Auth;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

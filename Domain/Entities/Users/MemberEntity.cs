@@ -1,5 +1,6 @@
 ﻿using Ibnt.Server.Domain.Entities.Reactions;
 using Ibnt.Server.Domain.Entities.TimeLine;
+using Ibnt.Server.Domain.Entities.Users.Auth;
 using Ibnt.Server.Domain.Exceptions;
 
 namespace Ibnt.Server.Domain.Entities.Users

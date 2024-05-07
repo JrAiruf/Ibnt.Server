@@ -3,8 +3,8 @@
     public class ToggleReactionDto
     {
         
-        public Guid MemberId { get; set; }
-        public Guid ReactionId { get; set; }
-        public Guid EventId { get; set; }
+        public Guid MemberId { get; init; }
+        public Guid ReactionId { get; init; }
+        public Guid EventId { get; init; }
     }
 }

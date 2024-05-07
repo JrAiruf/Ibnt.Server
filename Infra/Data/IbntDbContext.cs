@@ -2,6 +2,7 @@
 using Ibnt.Server.Domain.Entities.Reactions;
 using Ibnt.Server.Domain.Entities.TimeLine;
 using Ibnt.Server.Domain.Entities.Users;
+using Ibnt.Server.Domain.Entities.Users.Auth;
 using Ibnt.Server.Infra.Config;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,12 +14,13 @@ namespace Ibnt.Server.Infra.Data
         {
             if (!options.IsConfigured)
             {
-                options.UseNpgsql(ApiConfiguration.ConnectionStringValue());
+                options.UseSqlite(ApiConfiguration.ConnectionStringValue());
             }
         }
 
         public DbSet<MemberEntity> Members { get; set; }
         public DbSet<AuthCredentialEntity> Credentials { get; set; }
+        public DbSet<RecoveryPasswordEntity> RecoveryPasswords { get; set; }
         public DbSet<EventEntity> Events { get; set; }
         public DbSet<ReactionEntity> Reactions { get; set; }
 
@@ -33,6 +35,11 @@ namespace Ibnt.Server.Infra.Data
 
             });
 
+            modelBuilder.Entity<RecoveryPasswordEntity>(rP =>
+            {
+                rP.HasKey(r => r.VerificationCode);
+            });
+            
             modelBuilder.Entity<AuthCredentialEntity>(auth =>
             {
                 auth.HasKey(a => a.Email);

@@ -2,10 +2,10 @@
 
 namespace Ibnt.Server.Application.Dtos.MemberEntity
 {
-    public class CreateMemberDto
+    public record CreateMemberDto
     {
-        public string FullName { get; set; }
-        public string? ProfileImage { get; set; }
-        public CreateAuthDto Credential { get; set; }
+        public string FullName { get; init; }
+        public string? ProfileImage { get; init; }
+        public CreateAuthDto Credential { get; init; }
     }
 }
