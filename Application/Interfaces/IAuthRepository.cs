@@ -8,6 +8,7 @@ namespace Ibnt.Server.Application.Interfaces
         public Task<IEnumerable<AuthCredentialEntity>> GetAll();
         public Task<AuthCredentialEntity> GetCredential(string email, string password);
         public Task<RecoveryPasswordEntity> GetCredentialByEmail(string email);
+        public Task<RecoveryPasswordEntity> GetRecoveryPasswordEntityByVerificationCode(string verificationCode);
         public Task UpdateCredential(AuthCredentialEntity credential);
     }
 }

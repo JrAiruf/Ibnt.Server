@@ -14,7 +14,7 @@ namespace Ibnt.Server.Infra.Data
         {
             if (!options.IsConfigured)
             {
-                options.UseSqlite(ApiConfiguration.ConnectionStringValue());
+                options.UseNpgsql(ApiConfiguration.ConnectionStringValue());
             }
         }
 

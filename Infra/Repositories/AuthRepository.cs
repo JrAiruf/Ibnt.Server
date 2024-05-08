@@ -71,6 +71,16 @@ namespace Ibnt.Server.Infra.Repositories
             return recoveryEntity;
         }
 
+        public async Task<RecoveryPasswordEntity> GetRecoveryPasswordEntityByVerificationCode(string verificationCode)
+        {
+            var currentRecoveryEntity = await _context.RecoveryPasswords.FindAsync(verificationCode);
+            if (currentRecoveryEntity == null)
+            {
+                throw new AuthCredentialEntityException("O código de verificação informado, não é válido.");
+            }
+            return currentRecoveryEntity;
+        }
+
         public async Task UpdateCredential(AuthCredentialEntity credential)
         {
             var currentCredential = await _context.Credentials.FindAsync(credential.Email);

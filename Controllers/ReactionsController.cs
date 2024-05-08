@@ -23,22 +23,15 @@ namespace Ibnt.API.Controllers
         public async Task<IActionResult> Create([FromBody] CreateReactionDto dto)
         {
 
-            try
-            {
-                ReactionEntity reaction = new();
+            ReactionEntity reaction = new();
 
-                reaction.ChangeName("Glória");
-                reaction.ChangeMemberId(dto.MemberId);
-                reaction.ChangeEventId(dto.EventId);
+            reaction.ChangeName("Glória");
+            reaction.ChangeMemberId(dto.MemberId);
+            reaction.ChangeEventId(dto.EventId);
 
-                await _repository.Create(reaction);
+            await _repository.Create(reaction);
 
-                return Ok();
-            }
-            catch (Exception exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
-            }
+            return Ok();
         }
 
         [HttpGet]

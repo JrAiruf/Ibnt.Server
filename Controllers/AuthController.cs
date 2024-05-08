@@ -171,15 +171,24 @@ namespace Ibnt.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
             }
         }
-        [HttpPost("password-definition")]
+
+        [HttpPost("password-definition/{verificationCode}")]
         [AllowAnonymous]
-        public async Task<IActionResult> DefinePassword([FromBody] PasswordDefinitionDto dto)
+        public async Task<IActionResult> DefinePassword(string verificationCode, [FromBody] PasswordDefinitionDto dto)
         {
             try
             {
-                AuthCredentialEntity authCredentialEntity = new AuthCredentialEntity(dto.Email, dto.Password);
-                await _repository.UpdateCredential(authCredentialEntity);
-                return Ok();
+                var currentRecoveryEntity = await _repository.GetRecoveryPasswordEntityByVerificationCode(verificationCode);
+                if (currentRecoveryEntity == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    AuthCredentialEntity authCredentialEntity = new AuthCredentialEntity(dto.Email, dto.Password);
+                    await _repository.UpdateCredential(authCredentialEntity);
+                    return Ok();
+                }
             }
             catch (AppException exception)
             {
