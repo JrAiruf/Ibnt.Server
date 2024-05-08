@@ -12,12 +12,12 @@ namespace Ibnt.Server.Infra.Config
 
         public static string ConnectionStringValue()
         {
-            return $"host={HOST}:{PORT};userid={USER};password={PASSWORD}"
+            return $"host={HOST}:{PORT};userid={USER};password={PASSWORD}";
         }
 
         public static void ApplyMigrations(IbntDbContext context)
         {
-            if (context.Database.EnsureCreated() && context.Database.GetPendingMigrations().Any())
+            if (context.Database.GetPendingMigrations().Any())
             {
                 context.Database.Migrate();
             }
