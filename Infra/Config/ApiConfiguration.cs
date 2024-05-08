@@ -21,10 +21,6 @@ namespace Ibnt.Server.Infra.Config
             {
                 context.Database.Migrate();
             }
-            else
-            {
-                return;
-            }
         }
     }
 }
