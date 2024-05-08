@@ -17,5 +17,4 @@ RUN dotnet publish "Ibnt.Server.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-RUN dotnet ef database update
 ENTRYPOINT ["dotnet", "Ibnt.Server.dll"]

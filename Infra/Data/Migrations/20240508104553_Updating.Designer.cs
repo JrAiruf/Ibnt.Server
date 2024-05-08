@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ibnt.Server.Infra.Data.Migrations
 {
     [DbContext(typeof(IbntDbContext))]
-    [Migration("20240506230533_CreatingRecoveryPasswordTable")]
-    partial class CreatingRecoveryPasswordTable
+    [Migration("20240508104553_Updating")]
+    partial class Updating
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,7 +92,7 @@ namespace Ibnt.Server.Infra.Data.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("Ibnt.Server.Domain.Entities.Users.AuthCredentialEntity", b =>
+            modelBuilder.Entity("Ibnt.Server.Domain.Entities.Users.Auth.AuthCredentialEntity", b =>
                 {
                     b.Property<string>("Email")
                         .HasColumnType("text");
@@ -119,6 +119,25 @@ namespace Ibnt.Server.Infra.Data.Migrations
                     b.ToTable("Credentials");
                 });
 
+            modelBuilder.Entity("Ibnt.Server.Domain.Entities.Users.Auth.RecoveryPasswordEntity", b =>
+                {
+                    b.Property<string>("VerificationCode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("NewPassword")
+                        .HasColumnType("text");
+
+                    b.Property<string>("VerificationEmail")
+                        .HasColumnType("text");
+
+                    b.HasKey("VerificationCode");
+
+                    b.ToTable("RecoveryPasswords");
+                });
+
             modelBuilder.Entity("Ibnt.Server.Domain.Entities.Users.MemberEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -135,23 +154,6 @@ namespace Ibnt.Server.Infra.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Members");
-                });
-
-            modelBuilder.Entity("Ibnt.Server.Domain.Entities.Users.RecoveryPasswordEntity", b =>
-                {
-                    b.Property<string>("FullName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NewPassword")
-                        .HasColumnType("text");
-
-                    b.Property<string>("VerificationCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("VerificationEmail")
-                        .HasColumnType("text");
-
-                    b.ToTable("RecoveryPasswords");
                 });
 
             modelBuilder.Entity("EventEntityMemberEntity", b =>
@@ -188,11 +190,11 @@ namespace Ibnt.Server.Infra.Data.Migrations
                     b.Navigation("Member");
                 });
 
-            modelBuilder.Entity("Ibnt.Server.Domain.Entities.Users.AuthCredentialEntity", b =>
+            modelBuilder.Entity("Ibnt.Server.Domain.Entities.Users.Auth.AuthCredentialEntity", b =>
                 {
                     b.HasOne("Ibnt.Server.Domain.Entities.Users.MemberEntity", "Member")
                         .WithOne("Credential")
-                        .HasForeignKey("Ibnt.Server.Domain.Entities.Users.AuthCredentialEntity", "MemberId");
+                        .HasForeignKey("Ibnt.Server.Domain.Entities.Users.Auth.AuthCredentialEntity", "MemberId");
 
                     b.Navigation("Member");
                 });

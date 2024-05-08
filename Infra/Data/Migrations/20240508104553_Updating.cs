@@ -5,11 +5,46 @@
 namespace Ibnt.Server.Infra.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class CreatingRecoveryPasswordTable : Migration
+    public partial class Updating : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<string>(
+                name: "VerificationEmail",
+                table: "RecoveryPasswords",
+                type: "text",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "NewPassword",
+                table: "RecoveryPasswords",
+                type: "text",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "FullName",
+                table: "RecoveryPasswords",
+                type: "text",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "VerificationCode",
+                table: "RecoveryPasswords",
+                type: "text",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
+
             migrationBuilder.AlterColumn<bool>(
                 name: "Toogled",
                 table: "Reactions",
@@ -184,26 +219,45 @@ namespace Ibnt.Server.Infra.Data.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "TEXT");
-
-            migrationBuilder.CreateTable(
-                name: "RecoveryPasswords",
-                columns: table => new
-                {
-                    FullName = table.Column<string>(type: "text", nullable: true),
-                    VerificationCode = table.Column<string>(type: "text", nullable: true),
-                    VerificationEmail = table.Column<string>(type: "text", nullable: true),
-                    NewPassword = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                });
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "RecoveryPasswords");
+            migrationBuilder.AlterColumn<string>(
+                name: "VerificationEmail",
+                table: "RecoveryPasswords",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "text",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "NewPassword",
+                table: "RecoveryPasswords",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "text",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "FullName",
+                table: "RecoveryPasswords",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "text",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "VerificationCode",
+                table: "RecoveryPasswords",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "text");
 
             migrationBuilder.AlterColumn<int>(
                 name: "Toogled",
