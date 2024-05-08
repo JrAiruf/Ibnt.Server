@@ -12,7 +12,7 @@ namespace Ibnt.Server.Infra.Config
 
         public static string ConnectionStringValue()
         {
-            return $"host={HOST}:{PORT};userid={USER};password={PASSWORD}"
+            return $"host={HOST}:{PORT};userid={USER};password={PASSWORD}";
         }
 
         public static void ApplyMigrations(IbntDbContext context)
