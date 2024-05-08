@@ -17,7 +17,8 @@ namespace Ibnt.Server.Infra.Repositories
             await _context.Events.AddAsync(newEvent);
             await _context.SaveChangesAsync();
             var createdEvent = await _context.Events
-                .FindAsync(newEvent.Id);
+                .IgnoreAutoIncludes()
+                .FirstOrDefaultAsync(e => e.Id == newEvent.Id);
             return createdEvent;
         }
 

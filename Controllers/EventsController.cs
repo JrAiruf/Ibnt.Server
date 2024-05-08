@@ -29,7 +29,7 @@ namespace Ibnt.API.Controllers
                dto.PostDate,
                dto.Date,
                dto.Description,
-               dto.ImageUrl ?? "");
+               dto.ImageUrl ?? "img");
 
                 var createdEvent = await _repository.Create(newEvent);
                 return StatusCode(StatusCodes.Status201Created, createdEvent.AsDto());

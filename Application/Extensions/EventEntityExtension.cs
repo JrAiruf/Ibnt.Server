@@ -17,7 +17,7 @@ namespace Ibnt.Server.Application.Extensions
                 PostDate = eventEntity.PostDate,
                 Date = eventEntity.Date,
                 Description = eventEntity.Description,
-                Reactions = eventEntity.Reactions.Select(r => r.AsDto()).ToList()
+                Reactions = eventEntity.Reactions?.Select(r => r.AsDto()).ToList() ?? new List<ReactionDto>()
             };
         }
 
