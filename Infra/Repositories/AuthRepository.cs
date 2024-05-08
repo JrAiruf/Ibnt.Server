@@ -68,6 +68,7 @@ namespace Ibnt.Server.Infra.Repositories
             var provisoryPassword = _hashService.GenerateVerificationCode(8);
             var recoveryEntity = new RecoveryPasswordEntity(currentUser.FullName, verificationCode, credential.Email, provisoryPassword);
             await _context.RecoveryPasswords.AddAsync(recoveryEntity);
+            await _context.SaveChangesAsync();
             return recoveryEntity;
         }
 
@@ -78,6 +79,8 @@ namespace Ibnt.Server.Infra.Repositories
             {
                 throw new AuthCredentialEntityException("O código de verificação informado, não é válido.");
             }
+            _context.RecoveryPasswords.Remove(currentRecoveryEntity);
+            await _context.SaveChangesAsync();
             return currentRecoveryEntity;
         }
 
