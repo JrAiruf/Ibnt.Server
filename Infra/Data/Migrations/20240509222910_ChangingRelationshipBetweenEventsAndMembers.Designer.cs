@@ -3,6 +3,7 @@ using System;
 using Ibnt.Server.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ibnt.Server.Infra.Data.Migrations
 {
     [DbContext(typeof(IbntDbContext))]
-    partial class IbntDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240509222910_ChangingRelationshipBetweenEventsAndMembers")]
+    partial class ChangingRelationshipBetweenEventsAndMembers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

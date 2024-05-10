@@ -43,7 +43,7 @@ namespace Ibnt.Server.Infra.Repositories
             var credential = await _context.Credentials.FindAsync(email);
             if (credential == null)
             {
-                throw new AuthCredentialEntityException("Error ao realizar login. Verifique os dados e tente novamente");
+                throw new AuthCredentialEntityException("Erro ao realizar login. Verifique os dados e tente novamente");
             }
             if (_hashService.CompareValue(password, credential.Password))
             {

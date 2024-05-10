@@ -7,6 +7,7 @@ namespace Ibnt.Server.Domain.Entities.TimeLine
         public Guid Id { get; set; }
         public string Title { get; set; }
         public DateTime? PostDate { get; set; }
+        public DateTime? CreationDate { get; set; } = DateTime.UtcNow;
         public DateTime? Date { get; set; }
         public string? Content { get; set; }
 
@@ -25,6 +26,14 @@ namespace Ibnt.Server.Domain.Entities.TimeLine
                 throw new MemberEntityException("A propriedade postDate não pode ser vazia ou nula.");
             }
             PostDate = postDate;
+        }
+        public void ChangeCreationDate(DateTime? creationDate)
+        {
+            if (string.IsNullOrEmpty(creationDate.ToString()))
+            {
+                throw new MemberEntityException("A propriedade creationDate não pode ser vazia ou nula.");
+            }
+            CreationDate = creationDate;
         }
         public void ChangeDate(DateTime? date)
         {

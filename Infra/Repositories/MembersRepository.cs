@@ -39,7 +39,10 @@ namespace Ibnt.Server.Infra.Repositories
 
         public async Task<MemberEntity> GetById(Guid id)
         {
-            var currentMember = await _context.Members.FindAsync(id);
+            var currentMember = await _context.Members
+                                              .IgnoreAutoIncludes()
+                                              .Include(m => m.BibleMessages)
+                                              .FirstOrDefaultAsync(m => m.Id == id);
             if (currentMember != null)
             {
                 return currentMember;

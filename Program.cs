@@ -11,7 +11,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<IbntDbContext>();
+builder.Services.AddDbContext<IbntDbContext>(); 
 
 var context = builder.Configuration.Get<IbntDbContext>();
 
@@ -25,6 +25,8 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IMembersRepository, MembersRepository>();
 
 builder.Services.AddScoped<IEventsRepository, EventsRepository>();
+
+builder.Services.AddScoped<IBibleMessagesRepository, BibleMessagesRepository>();
 
 builder.Services.AddScoped<IReactionsRepository, ReactionsRepository>();
 

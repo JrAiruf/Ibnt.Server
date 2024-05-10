@@ -1,4 +1,5 @@
-﻿using Ibnt.Server.Application.Dtos.EventEntity;
+﻿using Ibnt.Application.Dtos.EventEntity;
+using Ibnt.Server.Application.Dtos.EventEntity;
 using Ibnt.Server.Application.Dtos.GloryReactionEntity;
 using Ibnt.Server.Domain.Entities.TimeLine;
 
@@ -21,9 +22,9 @@ namespace Ibnt.Server.Application.Extensions
             };
         }
 
-        public static EventDto AsListDto(this EventEntity eventEntity)
+        public static EventListDto AsListDto(this EventEntity eventEntity)
         {
-            return new EventDto
+            return new EventListDto
             {
                 Id = eventEntity.Id,
                 Title = eventEntity.Title,
@@ -31,7 +32,6 @@ namespace Ibnt.Server.Application.Extensions
                 PostDate = eventEntity.PostDate,
                 Date = eventEntity.Date,
                 Description = eventEntity.Description,
-                Reactions = new List<ReactionDto>()
             };
         }
     }

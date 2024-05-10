@@ -4,6 +4,6 @@ namespace Ibnt.Domain.Entities.TimeLine
 {
     public class PostEntity : TimeLineContent
     {
-
+        public string EntityType { get; private set; } = "post";
     }
 }

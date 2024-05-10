@@ -5,10 +5,10 @@ namespace Ibnt.Server.Infra.Config
 {
     public class ApiConfiguration
     {
-        public static string HOST = Environment.GetEnvironmentVariable("PGHOST");
-        public static string PASSWORD = Environment.GetEnvironmentVariable("PGPASSWORD");
-        public static string USER = Environment.GetEnvironmentVariable("PGUSER");
-        public static string PORT = Environment.GetEnvironmentVariable("PGPORT");
+        public static string? HOST = Environment.GetEnvironmentVariable("PGHOST");
+        public static string? PASSWORD = Environment.GetEnvironmentVariable("PGPASSWORD");
+        public static string? USER = Environment.GetEnvironmentVariable("PGUSER");
+        public static string? PORT = Environment.GetEnvironmentVariable("PGPORT");
 
         public static string ConnectionStringValue()
         {
@@ -25,3 +25,4 @@ namespace Ibnt.Server.Infra.Config
     }
 }
 
+    

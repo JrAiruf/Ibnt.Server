@@ -3,6 +3,7 @@ using System;
 using Ibnt.Server.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ibnt.Server.Infra.Data.Migrations
 {
     [DbContext(typeof(IbntDbContext))]
-    partial class IbntDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240509220342_AddingBibleMessagesTable")]
+    partial class AddingBibleMessagesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace Ibnt.Server.Infra.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("EventEntityMemberEntity", b =>
+                {
+                    b.Property<string>("EventsId")
+                        .HasColumnType("character varying(36)");
+
+                    b.Property<string>("MembersId")
+                        .HasColumnType("character varying(36)");
+
+                    b.HasKey("EventsId", "MembersId");
+
+                    b.HasIndex("MembersId");
+
+                    b.ToTable("EventEntityMemberEntity");
+                });
 
             modelBuilder.Entity("Ibnt.Domain.Entities.TimeLine.BibleMessagesEntity", b =>
                 {
@@ -126,9 +144,6 @@ namespace Ibnt.Server.Infra.Data.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
 
-                    b.Property<string>("MemberId")
-                        .HasColumnType("character varying(36)");
-
                     b.Property<string>("PostDate")
                         .HasColumnType("character varying(48)");
 
@@ -137,8 +152,6 @@ namespace Ibnt.Server.Infra.Data.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MemberId");
 
                     b.ToTable("Events");
                 });
@@ -207,6 +220,21 @@ namespace Ibnt.Server.Infra.Data.Migrations
                     b.ToTable("Members");
                 });
 
+            modelBuilder.Entity("EventEntityMemberEntity", b =>
+                {
+                    b.HasOne("Ibnt.Server.Domain.Entities.TimeLine.EventEntity", null)
+                        .WithMany()
+                        .HasForeignKey("EventsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ibnt.Server.Domain.Entities.Users.MemberEntity", null)
+                        .WithMany()
+                        .HasForeignKey("MembersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Ibnt.Domain.Entities.TimeLine.BibleMessagesEntity", b =>
                 {
                     b.HasOne("Ibnt.Server.Domain.Entities.Users.MemberEntity", "Member")
@@ -245,15 +273,6 @@ namespace Ibnt.Server.Infra.Data.Migrations
                     b.Navigation("Member");
                 });
 
-            modelBuilder.Entity("Ibnt.Server.Domain.Entities.TimeLine.EventEntity", b =>
-                {
-                    b.HasOne("Ibnt.Server.Domain.Entities.Users.MemberEntity", "Member")
-                        .WithMany("Events")
-                        .HasForeignKey("MemberId");
-
-                    b.Navigation("Member");
-                });
-
             modelBuilder.Entity("Ibnt.Server.Domain.Entities.Users.Auth.AuthCredentialEntity", b =>
                 {
                     b.HasOne("Ibnt.Server.Domain.Entities.Users.MemberEntity", "Member")
@@ -278,8 +297,6 @@ namespace Ibnt.Server.Infra.Data.Migrations
                     b.Navigation("BilbeMessages");
 
                     b.Navigation("Credential");
-
-                    b.Navigation("Events");
 
                     b.Navigation("Reactions");
                 });

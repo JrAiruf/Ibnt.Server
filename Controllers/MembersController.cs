@@ -96,7 +96,7 @@ namespace Ibnt.API.Controllers
                 {
                     return NotFound(new { sendedId = id });
                 }
-                return Ok(member);
+                return Ok(member.AsDto());
             }
             catch (AppException exception)
             {

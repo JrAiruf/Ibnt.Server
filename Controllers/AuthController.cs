@@ -172,7 +172,7 @@ namespace Ibnt.API.Controllers
             }
         }
 
-        [HttpPost("password-definition/{verificationCode}")]
+        [HttpPut("password-definition/{verificationCode}")]
         [AllowAnonymous]
         public async Task<IActionResult> DefinePassword(string verificationCode, [FromBody] PasswordDefinitionDto dto)
         {
