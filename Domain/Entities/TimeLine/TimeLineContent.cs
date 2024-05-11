@@ -6,9 +6,9 @@ namespace Ibnt.Server.Domain.Entities.TimeLine
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public DateTime? PostDate { get; set; }
-        public DateTime? CreationDate { get; set; } = DateTime.UtcNow;
-        public DateTime? Date { get; set; }
+        public DateTime? PostDate { get; set; } = DateTime.Now;
+        public DateTime? CreationDate { get; set; } = DateTime.Now;
+        public DateTime? Date { get; set; } = DateTime.Now;
         public string? Content { get; set; }
 
         public void ChangeTitle(string? title)

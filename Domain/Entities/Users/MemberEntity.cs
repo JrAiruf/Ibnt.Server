@@ -20,7 +20,7 @@ namespace Ibnt.Server.Domain.Entities.Users
         public string FullName { get; private set; }
         public string? ProfileImage { get; private set; }
         public AuthCredentialEntity? Credential { get; private set; }
-        public List<ReactionEntity>? Reactions { get; set; }
+        public List<ReactionEventEntity>? Reactions { get; set; }
         public List<EventEntity>? Events { get; set; }
         public List<BibleMessageEntity>? BibleMessages{ get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using Ibnt.Domain.Entities.TimeLine;
 using Ibnt.Server.Application.Dtos.BibleMessageEntity;
-using Ibnt.Server.Application.Dtos.GloryReactionEntity;
+using Ibnt.Server.Application.Dtos.ReactionEntity;
 
 namespace Ibnt.Server.Application.Extensions
 {
@@ -17,7 +17,7 @@ namespace Ibnt.Server.Application.Extensions
                 CreationDate = entity.CreationDate,
                 PostDate = entity.PostDate,
                 EntityType = entity.EntityType,
-                Reactions = entity.Reactions?.Select(r => r.AsDto()).ToList() ?? new List<ReactionDto>(),
+                Reactions = entity.Reactions?.Select(r => r.AsDto()).ToList() ?? new List<BibleMessageReactionDto>(),
                 MemberId = entity.MemberId
             };
         }

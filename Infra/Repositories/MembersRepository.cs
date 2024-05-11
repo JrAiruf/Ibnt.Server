@@ -25,24 +25,24 @@ namespace Ibnt.Server.Infra.Repositories
             await _context.Members.AddAsync(member);
             await _context.Credentials.AddAsync(member.Credential!);
             await _context.SaveChangesAsync();
-            var createdMember = await _context.Members.FindAsync(member.Id);
+
+            var createdMember = await _context.Members
+               .IgnoreAutoIncludes()
+               .Include(m => m.Credential)
+               .FirstOrDefaultAsync(m => m.Id == member.Id);
+
             return createdMember;
         }
 
-        public async Task<IEnumerable<MemberEntity>> GetAll()
-        {
-            return await _context.Members
-                .Include(
-                c => c.Credential
-                ).ToListAsync();
-        }
+        public async Task<IEnumerable<MemberEntity>> GetAll() => await _context.Members.IgnoreAutoIncludes().ToListAsync();
 
         public async Task<MemberEntity> GetById(Guid id)
         {
             var currentMember = await _context.Members
-                                              .IgnoreAutoIncludes()
-                                              .Include(m => m.BibleMessages)
-                                              .FirstOrDefaultAsync(m => m.Id == id);
+                .IgnoreAutoIncludes()
+                .Include(m => m.BibleMessages)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (currentMember != null)
             {
                 return currentMember;

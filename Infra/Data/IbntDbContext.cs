@@ -24,7 +24,10 @@ namespace Ibnt.Server.Infra.Data
         public DbSet<RecoveryPasswordEntity> RecoveryPasswords { get; set; }
         public DbSet<EventEntity> Events { get; set; }
         public DbSet<BibleMessageEntity> BibleMessages { get; set; }
-        public DbSet<ReactionEntity> Reactions { get; set; }
+        public DbSet<PostEntity> Posts { get; set; }
+        public DbSet<ReactionEventEntity> EventReactions { get; set; }
+        public DbSet<ReactionBibleMessageEntity> BibleMessageReactions { get; set; }
+        public DbSet<ReactionPostEntity> PostReactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,36 +52,70 @@ namespace Ibnt.Server.Infra.Data
             });
 
             //TIMELINE
+
+            //ENTITY
             modelBuilder.Entity<EventEntity>(eventEntity =>
             {
                 eventEntity.Property(e => e.Id).HasConversion(typeof(string));
                 eventEntity.Property(e => e.PostDate).HasConversion(typeof(string));
+                eventEntity.Property(e => e.CreationDate).HasConversion(typeof(string));
                 eventEntity.Property(e => e.Date).HasConversion(typeof(string));
             });
-
-            modelBuilder.Entity<ReactionEntity>(
-                         reaction =>
-                         {
-                             reaction.HasKey(r => r.Id);
-                             reaction.HasAlternateKey(r => new { r.MemberId, r.EventId });
-                             reaction.HasAlternateKey(r => new { r.MemberId, r.BibleMessageId });
-                         });
-
-            modelBuilder.Entity<ReactionEntity>(reaction =>
-                        {
-                            reaction.Property(r => r.Id).HasConversion(typeof(string));
-                            reaction.Property(r => r.MemberId).HasConversion(typeof(string));
-                            reaction.Property(r => r.EventId).HasConversion(typeof(string));
-                        });
-
+            //ENTITY
             modelBuilder.Entity<BibleMessageEntity>(
                 message =>
                 {
-                    message.Property(m => m.Id).HasConversion(typeof(string));
-                    message.Property(m => m.CreationDate).HasConversion(typeof(string));
+                    message.Property(e => e.Id).HasConversion(typeof(string));
                     message.Property(m => m.PostDate).HasConversion(typeof(string));
+                    message.Property(m => m.CreationDate).HasConversion(typeof(string));
                     message.Property(m => m.Date).HasConversion(typeof(string));
                 });
+            //ENTITY
+            modelBuilder.Entity<PostEntity>(
+                post =>
+                {
+                    post.Property(p => p.Id).HasConversion(typeof(string));
+                    post.Property(p => p.PostDate).HasConversion(typeof(string));
+                    post.Property(p => p.CreationDate).HasConversion(typeof(string));
+                    post.Property(p => p.Date).HasConversion(typeof(string));
+                });
+            //REACTION
+            modelBuilder.Entity<ReactionEventEntity>(
+                         reaction =>
+                         {
+                             reaction.HasKey(r => new { r.MemberId, r.EventId });
+                         });
+
+            modelBuilder.Entity<ReactionEventEntity>(reaction =>
+                        {
+                            reaction.Property(r => r.MemberId).HasConversion(typeof(string));
+                            reaction.Property(r => r.EventId).HasConversion(typeof(string));
+                        });
+            //REACTION
+            modelBuilder.Entity<ReactionBibleMessageEntity>(
+                         reaction =>
+                         {
+                             reaction.HasKey(r => new { r.MemberId, r.BibleMessageId });
+                         });
+
+            modelBuilder.Entity<ReactionBibleMessageEntity>(reaction =>
+                        {
+                            reaction.Property(r => r.MemberId).HasConversion(typeof(string));
+                            reaction.Property(r => r.BibleMessageId).HasConversion(typeof(string));
+                        });
+            //REACTION
+            modelBuilder.Entity<ReactionPostEntity>(
+                         reaction =>
+                         {
+                             reaction.HasKey(r => new { r.MemberId, r.PostId });
+                         });
+
+            modelBuilder.Entity<ReactionPostEntity>(reaction =>
+                        {
+                            reaction.Property(r => r.MemberId).HasConversion(typeof(string));
+                            reaction.Property(r => r.PostId).HasConversion(typeof(string));
+                        });
+
         }
     }
 }

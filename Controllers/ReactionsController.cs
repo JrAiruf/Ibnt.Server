@@ -1,4 +1,4 @@
-﻿using Ibnt.Server.Application.Dtos.GloryReactionEntity;
+﻿using Ibnt.Server.Application.Dtos.ReactionEntity;
 using Ibnt.Server.Application.Extensions;
 using Ibnt.Server.Application.Interfaces;
 using Ibnt.Server.Domain.Entities.Reactions;
@@ -19,15 +19,45 @@ namespace Ibnt.API.Controllers
             _repository = repository;
         }
 
-        [HttpPost("glory")]
-        public async Task<IActionResult> Create([FromBody] CreateReactionDto dto)
+        [HttpPost("events")]
+        public async Task<IActionResult> EventReaction([FromBody] CreateEventReactionDto dto)
         {
 
-            ReactionEntity reaction = new();
+            ReactionEventEntity reaction = new();
 
-            reaction.ChangeName("Glória");
+            reaction.ChangeName(dto.Name);
             reaction.ChangeMemberId(dto.MemberId);
             reaction.ChangeEventId(dto.EventId);
+
+            await _repository.Create(reaction);
+
+            return Ok();
+        }
+
+        [HttpPost("bible-messages")]
+        public async Task<IActionResult> BibleMessageReaction([FromBody] CreateBibleMessageReactionDto dto)
+        {
+
+            ReactionBibleMessageEntity reaction = new();
+
+            reaction.ChangeName(dto.Name);
+            reaction.ChangeMemberId(dto.MemberId);
+            reaction.ChangeBibleMessageId(dto.BibleMessageId);
+
+            await _repository.Create(reaction);
+
+            return Ok();
+        }
+
+        [HttpPost("posts")]
+        public async Task<IActionResult> PostReaction([FromBody] CreatePostReactionDto dto)
+        {
+
+            ReactionPostEntity reaction = new();
+
+            reaction.ChangeName(dto.Name);
+            reaction.ChangeMemberId(dto.MemberId);
+            reaction.ChangePostId(dto.PostId);
 
             await _repository.Create(reaction);
 
@@ -39,7 +69,7 @@ namespace Ibnt.API.Controllers
         {
             try
             {
-                var databaseReactions = await _repository.GetAll();
+                var databaseReactions = await _repository.GetAllEventsReactions();
                 var reactionsList = databaseReactions.Select(r => r.AsDto()).ToList();
                 return Ok(reactionsList);
             }
@@ -48,12 +78,43 @@ namespace Ibnt.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
             }
         }
-        [HttpGet("{eventId}")]
+
+        [HttpGet("event/{eventId}")]
         public async Task<IActionResult> GetReactionsByEventId(Guid eventId)
         {
             try
             {
                 var databaseReactions = await _repository.GetReactionsByEventId(eventId);
+                var reactionsList = databaseReactions.Select(r => r.AsDto()).ToList();
+                return Ok(reactionsList);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+
+        [HttpGet("bible-message/{messageId}")]
+        public async Task<IActionResult> GetReactionsByBibleMessageId(Guid messageId)
+        {
+            try
+            {
+                var databaseReactions = await _repository.GetReactionsByBibleMessageId(messageId);
+                var reactionsList = databaseReactions.Select(r => r.AsDto()).ToList();
+                return Ok(reactionsList);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+
+        [HttpGet("post/{postId}")]
+        public async Task<IActionResult> GetReactionsByPostId(Guid postId)
+        {
+            try
+            {
+                var databaseReactions = await _repository.GetReactionsByPostId(postId);
                 var reactionsList = databaseReactions.Select(r => r.AsDto()).ToList();
                 return Ok(reactionsList);
             }

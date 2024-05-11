@@ -19,7 +19,7 @@ namespace Ibnt.Server.Infra.Repositories
             var createdEvent = await _context.Events
                 .IgnoreAutoIncludes()
                 .FirstOrDefaultAsync(e => e.Id == newEvent.Id);
-            return createdEvent;
+            return createdEvent!;
         }
 
         public async Task<IEnumerable<EventEntity>> GetAll()

@@ -15,9 +15,15 @@ namespace Ibnt.Domain.Entities.TimeLine
             ChangeContent(content);
             ChangeMemberId(memberId);
         }
+        public BibleMessageEntity(string title, string baseText, string content)
+        {
+            ChangeTitle(title);
+            ChangeBaseText(baseText);
+            ChangeContent(content);
+        }
         public string? BaseText { get; set; }
         public string EntityType { get; private set; } = "message";
-        public List<ReactionEntity>? Reactions { get; set; }
+        public List<ReactionBibleMessageEntity>? Reactions { get; set; }
         public Guid MemberId { get; set; }
         public MemberEntity? Member { get; set; }
 

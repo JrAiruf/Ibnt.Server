@@ -1,5 +1,5 @@
 ﻿
-using Ibnt.Server.Application.Dtos.GloryReactionEntity;
+using Ibnt.Server.Application.Dtos.ReactionEntity;
 
 namespace Ibnt.Server.Application.Dtos.EventEntity
 {
@@ -11,6 +11,6 @@ namespace Ibnt.Server.Application.Dtos.EventEntity
         public DateTime? PostDate { get; init; }
         public DateTime? Date { get; init; }
         public string Description { get; init; }
-        public List<ReactionDto>? Reactions { get; init; }
+        public List<EventReactionDto>? Reactions { get; init; }
     }
 }

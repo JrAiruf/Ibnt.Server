@@ -1,6 +1,6 @@
 ﻿using Ibnt.Application.Dtos.EventEntity;
 using Ibnt.Server.Application.Dtos.EventEntity;
-using Ibnt.Server.Application.Dtos.GloryReactionEntity;
+using Ibnt.Server.Application.Dtos.ReactionEntity;
 using Ibnt.Server.Domain.Entities.TimeLine;
 
 namespace Ibnt.Server.Application.Extensions
@@ -18,7 +18,7 @@ namespace Ibnt.Server.Application.Extensions
                 PostDate = eventEntity.PostDate,
                 Date = eventEntity.Date,
                 Description = eventEntity.Description,
-                Reactions = eventEntity.Reactions?.Select(r => r.AsDto()).ToList() ?? new List<ReactionDto>()
+                Reactions = eventEntity.Reactions?.Select(r => r.AsDto()).ToList() ?? new List<EventReactionDto>()
             };
         }
 

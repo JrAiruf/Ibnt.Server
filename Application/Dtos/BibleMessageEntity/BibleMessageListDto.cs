@@ -1,4 +1,4 @@
-﻿using Ibnt.Server.Application.Dtos.GloryReactionEntity;
+﻿using Ibnt.Server.Application.Dtos.ReactionEntity;
 
 namespace Ibnt.Server.Application.Dtos.BibleMessageEntity
 {

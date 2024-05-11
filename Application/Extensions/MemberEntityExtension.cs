@@ -13,7 +13,7 @@ namespace Ibnt.Server.Application.Extensions
                 Id = member.Id,
                 FullName = member.FullName,
                 ProfileImage = member.ProfileImage,
-                BibleMessages = member.BibleMessages?.Select(b => b.AsDto()).ToList() ?? new List<BibleMessageDto>()
+                Credential = member.Credential.AsDto(),
             };
         }
         public static MemberListDto AsDtoList(this MemberEntity member)

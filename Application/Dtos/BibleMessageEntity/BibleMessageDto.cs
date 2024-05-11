@@ -1,4 +1,4 @@
-﻿using Ibnt.Server.Application.Dtos.GloryReactionEntity;
+﻿using Ibnt.Server.Application.Dtos.ReactionEntity;
 using Ibnt.Server.Application.Dtos.MemberEntity;
 
 namespace Ibnt.Server.Application.Dtos.BibleMessageEntity
@@ -12,7 +12,7 @@ namespace Ibnt.Server.Application.Dtos.BibleMessageEntity
         public string? Content { get; set; }
         public string? BaseText { get; set; }
         public string EntityType { get; set; }
-        public List<ReactionDto>? Reactions { get; set; }
+        public List<BibleMessageReactionDto>? Reactions { get; set; }
         public Guid MemberId { get; set; }
     }
 }

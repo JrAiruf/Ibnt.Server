@@ -54,7 +54,7 @@ namespace Ibnt.API.Controllers
             }
             catch (AppException exception)
             {
-                if (exception is MemberEntityException)
+                if (exception is MemberEntityException || exception is ExistingUserException)
                 {
                     return BadRequest(exception.Message);
                 }
