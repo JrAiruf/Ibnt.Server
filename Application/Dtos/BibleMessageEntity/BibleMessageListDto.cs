@@ -10,6 +10,7 @@ namespace Ibnt.Server.Application.Dtos.BibleMessageEntity
         public DateTime? CreationDate { get; set; }
         public string? Content { get; set; }
         public string? BaseText { get; set; }
+        public string? Type { get; set; }
         public string EntityType { get; set; }
         public Guid MemberId { get; set; }
     }
