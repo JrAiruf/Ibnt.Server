@@ -5,7 +5,6 @@ using Ibnt.Server.Application.Interfaces;
 using Ibnt.Server.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Ibnt.Server.Controllers
 {
@@ -28,9 +27,11 @@ namespace Ibnt.Server.Controllers
                 var newMessage = new BibleMessageEntity(
                     dto.Title,
                     dto.BaseText,
+                    dto.Type,
                     dto.Content,
                     dto.MemberId
                     );
+
                 var createdMessage = await _repository.Create(newMessage);
                 return StatusCode(StatusCodes.Status201Created, createdMessage.AsDto());
             }
