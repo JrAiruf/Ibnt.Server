@@ -70,7 +70,7 @@ namespace Ibnt.Server.Controllers
             {
                 if (exception is BibleMessageException)
                 {
-                    return NotFound();
+                    return NotFound(exception.Message);
                 }
                 return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
             }
