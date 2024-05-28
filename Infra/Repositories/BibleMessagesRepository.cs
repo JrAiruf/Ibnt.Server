@@ -37,6 +37,18 @@ namespace Ibnt.Server.Infra.Repositories
             return currentMessage;
         }
 
+        public async Task<List<BibleMessageEntity>> GetMessagesByMemberIdAsync(Guid memberId)
+        {
+            var memberMessages = await _context.BibleMessages
+                .Where(m => m.MemberId == memberId)
+                .ToListAsync();
+            if (memberMessages == null || !memberMessages.Any())
+            {
+                throw new BibleMessageException($"Nenhuma mensagem atribuída ao usuário com o id {memberId} foi encontrada.");
+            }
+            return memberMessages;
+        }
+
         public async Task<BibleMessageEntity> Update(Guid id, BibleMessageEntity message)
         {
             var currentMessage = await _context.BibleMessages.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
