@@ -37,7 +37,7 @@ namespace Ibnt.Server.Controllers
             }
             catch (AppException exception)
             {
-                if (exception is TimeLineContentException || exception is MemberEntityException)
+                if (exception is TimeLineContentException || exception is BibleMessageException)
                 {
                     return BadRequest(exception.Message);
                 }
@@ -57,6 +57,25 @@ namespace Ibnt.Server.Controllers
             return Ok(bibleMessages);
         }
 
+        [HttpGet("member/{memberId}")]
+        public async Task<IActionResult> GetAllMemberMessagesAsync(Guid memberId)
+        {
+            try
+            {
+                var databaseBibleMessages = await _repository.GetMessagesByMemberIdAsync(memberId);
+                var bibleMessages = databaseBibleMessages.Select(b => b.AsListDto()).ToList();
+                return Ok(bibleMessages);
+            }
+            catch (AppException exception)
+            {
+                if (exception is BibleMessageException)
+                {
+                    return NotFound();
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
@@ -67,7 +86,7 @@ namespace Ibnt.Server.Controllers
             }
             catch (AppException exception)
             {
-                if (exception is MemberEntityException)
+                if (exception is BibleMessageException)
                 {
                     return NotFound(exception.Message);
                 }
@@ -90,7 +109,7 @@ namespace Ibnt.Server.Controllers
             }
             catch (AppException exception)
             {
-                if (exception is MemberEntityException)
+                if (exception is BibleMessageException)
                 {
                     return NotFound(exception.Message);
                 }
@@ -116,7 +135,7 @@ namespace Ibnt.Server.Controllers
             }
             catch (AppException exception)
             {
-                if (exception is MemberEntityException)
+                if (exception is BibleMessageException)
                 {
                     return NotFound(exception.Message);
                 }
