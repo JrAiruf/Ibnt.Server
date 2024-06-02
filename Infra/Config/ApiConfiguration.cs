@@ -12,6 +12,10 @@ namespace Ibnt.Server.Infra.Config
 
         public static string ConnectionStringValue()
         {
+            HOST = HOST ?? "localhost";
+            PASSWORD = PASSWORD ?? "12345678";
+            USER = USER ?? "jradmin";
+            PORT = PORT ?? "41357";
             return $"host={HOST}:{PORT};userid={USER};password={PASSWORD}";
         }
 

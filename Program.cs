@@ -24,6 +24,8 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
 builder.Services.AddScoped<IMembersRepository, MembersRepository>();
 
+builder.Services.AddScoped<ITimeLineRepository, TimeLineRepository>();
+
 builder.Services.AddScoped<IEventsRepository, EventsRepository>();
 
 builder.Services.AddScoped<IBibleMessagesRepository, BibleMessagesRepository>();

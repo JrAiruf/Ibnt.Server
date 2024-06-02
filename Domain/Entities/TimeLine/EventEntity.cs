@@ -20,6 +20,8 @@ namespace Ibnt.Server.Domain.Entities.TimeLine
         public string EntityType { get; private set; } = "event";
         public List<ReactionEventEntity>? Reactions { get; set; }
         public MemberEntity? Member { get; set; }
+        public TimeLineEntity? TimeLine { get; private set; }
+        public Guid? TimeLineId { get; set; }
 
         public void ChangeImageUrl(string? imageUrl)
         {

@@ -28,6 +28,8 @@ namespace Ibnt.Domain.Entities.TimeLine
         public List<ReactionBibleMessageEntity>? Reactions { get; set; }
         public Guid MemberId { get; set; }
         public MemberEntity? Member { get; set; }
+        public TimeLineEntity? TimeLine { get; private set; }
+        public Guid? TimeLineId { get; set; }
 
         public void ChangeBaseText(string? baseText)
         {

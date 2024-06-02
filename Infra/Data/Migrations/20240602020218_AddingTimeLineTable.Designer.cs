@@ -3,6 +3,7 @@ using System;
 using Ibnt.Server.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ibnt.Server.Infra.Data.Migrations
 {
     [DbContext(typeof(IbntDbContext))]
-    partial class IbntDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240602020218_AddingTimeLineTable")]
+    partial class AddingTimeLineTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,14 +238,14 @@ namespace Ibnt.Server.Infra.Data.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("text");
 
-                    b.Property<string>("CreationDate")
-                        .HasColumnType("character varying(48)");
+                    b.Property<DateTime?>("CreationDate")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Date")
-                        .HasColumnType("character varying(48)");
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("PostDate")
-                        .HasColumnType("character varying(48)");
+                    b.Property<DateTime?>("PostDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -326,7 +329,7 @@ namespace Ibnt.Server.Infra.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Ibnt.Server.Domain.Entities.TimeLine.TimeLineEntity", "TimeLine")
-                        .WithMany("BibleMessages")
+                        .WithMany("BIbleMessages")
                         .HasForeignKey("TimeLineId");
 
                     b.Navigation("Member");
@@ -421,7 +424,7 @@ namespace Ibnt.Server.Infra.Data.Migrations
 
             modelBuilder.Entity("Ibnt.Server.Domain.Entities.TimeLine.TimeLineEntity", b =>
                 {
-                    b.Navigation("BibleMessages");
+                    b.Navigation("BIbleMessages");
 
                     b.Navigation("Events");
                 });

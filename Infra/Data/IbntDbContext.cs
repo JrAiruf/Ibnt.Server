@@ -19,12 +19,18 @@ namespace Ibnt.Server.Infra.Data
             }
         }
 
+        //USERS
         public DbSet<MemberEntity> Members { get; set; }
         public DbSet<AuthCredentialEntity> Credentials { get; set; }
         public DbSet<RecoveryPasswordEntity> RecoveryPasswords { get; set; }
+
+        //TIMELINE
+        public DbSet<TimeLineEntity> TimeLine { get; set; }
         public DbSet<EventEntity> Events { get; set; }
         public DbSet<BibleMessageEntity> BibleMessages { get; set; }
         public DbSet<PostEntity> Posts { get; set; }
+
+        //REACTIONS
         public DbSet<ReactionEventEntity> EventReactions { get; set; }
         public DbSet<ReactionBibleMessageEntity> BibleMessageReactions { get; set; }
         public DbSet<ReactionPostEntity> PostReactions { get; set; }
@@ -53,24 +59,36 @@ namespace Ibnt.Server.Infra.Data
 
             //TIMELINE
 
-            //ENTITY
+            //TIMELINE ENTITY
+            modelBuilder.Entity<TimeLineEntity>(timeline =>
+            {
+                timeline.Property(e => e.PostDate).HasConversion(typeof(string));
+                timeline.Property(e => e.CreationDate).HasConversion(typeof(string));
+                timeline.Property(e => e.Date).HasConversion(typeof(string));
+            });
+
+            //EVENT ENTITY
             modelBuilder.Entity<EventEntity>(eventEntity =>
             {
                 eventEntity.Property(e => e.Id).HasConversion(typeof(string));
                 eventEntity.Property(e => e.PostDate).HasConversion(typeof(string));
                 eventEntity.Property(e => e.CreationDate).HasConversion(typeof(string));
                 eventEntity.Property(e => e.Date).HasConversion(typeof(string));
+                eventEntity.HasOne(e => e.TimeLine).WithMany(t => t.Events);
             });
-            //ENTITY
+
+            //BIBLEMESSAGE ENTITY
             modelBuilder.Entity<BibleMessageEntity>(
                 message =>
                 {
-                    message.Property(e => e.Id).HasConversion(typeof(string));
+                    message.Property(m => m.Id).HasConversion(typeof(string));
                     message.Property(m => m.PostDate).HasConversion(typeof(string));
                     message.Property(m => m.CreationDate).HasConversion(typeof(string));
                     message.Property(m => m.Date).HasConversion(typeof(string));
+                    message.HasOne(m => m.TimeLine).WithMany(t => t.BibleMessages);
                 });
-            //ENTITY
+
+            //POST ENTITY
             modelBuilder.Entity<PostEntity>(
                 post =>
                 {
@@ -79,6 +97,7 @@ namespace Ibnt.Server.Infra.Data
                     post.Property(p => p.CreationDate).HasConversion(typeof(string));
                     post.Property(p => p.Date).HasConversion(typeof(string));
                 });
+
             //REACTION
             modelBuilder.Entity<ReactionEventEntity>(
                          reaction =>
@@ -91,6 +110,7 @@ namespace Ibnt.Server.Infra.Data
                             reaction.Property(r => r.MemberId).HasConversion(typeof(string));
                             reaction.Property(r => r.EventId).HasConversion(typeof(string));
                         });
+
             //REACTION
             modelBuilder.Entity<ReactionBibleMessageEntity>(
                          reaction =>
