@@ -2,6 +2,6 @@
 {
     public static class Secrets
     {
-        public static string? SecretKey = Environment.GetEnvironmentVariable("SECRET_KEY") ?? "SecretKey-a4oi3oisajodfih2oiJOH";
+        public static string? SecretKey = Environment.GetEnvironmentVariable("SECRET_KEY");
     }
 }
