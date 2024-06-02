@@ -31,7 +31,8 @@ namespace Ibnt.Server.Application.Extensions
                 ImageUrl = eventEntity.ImageUrl,
                 PostDate = eventEntity.PostDate,
                 Date = eventEntity.Date,
-                Description = eventEntity.Description,
+                EntityType = eventEntity.EntityType,
+                Description = eventEntity.Description
             };
         }
     }

@@ -2,16 +2,16 @@
 
 namespace Ibnt.Server.Application.Dtos.BibleMessageEntity
 {
-    public class BibleMessageListDto
+    public record BibleMessageListDto
     {
-        public Guid Id { get; set; }
-        public string Title { get; set; }
-        public DateTime? PostDate { get; set; }
-        public DateTime? CreationDate { get; set; }
-        public string? Content { get; set; }
-        public string? BaseText { get; set; }
-        public string? Type { get; set; }
-        public string EntityType { get; set; }
-        public Guid MemberId { get; set; }
+        public Guid Id { get; init; }
+        public string Title { get; init; }
+        public DateTime? PostDate { get; init; }
+        public DateTime? CreationDate { get; init; }
+        public string? Content { get; init; }
+        public string? BaseText { get; init; }
+        public string? Type { get; init; }
+        public string? EntityType { get; init; }
+        public Guid MemberId { get; init; }
     }
 }
