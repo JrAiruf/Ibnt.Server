@@ -16,6 +16,7 @@ namespace Ibnt.Server.Application.Extensions
             };
             return authDto;
         }
+
         public static AuthListDto AsListDto(this AuthCredentialEntity auth)
         {
             var authDto = new AuthListDto
@@ -24,6 +25,16 @@ namespace Ibnt.Server.Application.Extensions
                 Email = auth.Email,
                 Role = auth.Role,
 
+            };
+            return authDto;
+        }
+        
+        public static MemberCredentialDto AsCredentialDto(this AuthCredentialEntity auth)
+        {
+            var authDto = new MemberCredentialDto
+            {
+                Email = auth.Email,
+                Role = auth.Role
             };
             return authDto;
         }

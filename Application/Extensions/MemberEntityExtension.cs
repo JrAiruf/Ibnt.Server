@@ -1,5 +1,4 @@
-﻿using Ibnt.Server.Application.Dtos.BibleMessageEntity;
-using Ibnt.Server.Application.Dtos.MemberEntity;
+﻿using Ibnt.Server.Application.Dtos.MemberEntity;
 using Ibnt.Server.Domain.Entities.Users;
 
 namespace Ibnt.Server.Application.Extensions
@@ -13,7 +12,7 @@ namespace Ibnt.Server.Application.Extensions
                 Id = member.Id,
                 FullName = member.FullName,
                 ProfileImage = member.ProfileImage,
-                Credential = member.Credential.AsDto(),
+                Credential = member.Credential.AsCredentialDto(),
             };
         }
         public static MemberListDto AsDtoList(this MemberEntity member)

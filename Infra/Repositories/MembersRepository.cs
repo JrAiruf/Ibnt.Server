@@ -40,6 +40,7 @@ namespace Ibnt.Server.Infra.Repositories
         {
             var currentMember = await _context.Members
                 .IgnoreAutoIncludes()
+                .Include(m => m.Credential)
                 .Include(m => m.BibleMessages)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
