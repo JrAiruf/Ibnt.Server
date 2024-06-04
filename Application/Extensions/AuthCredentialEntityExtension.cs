@@ -34,7 +34,8 @@ namespace Ibnt.Server.Application.Extensions
             var authDto = new MemberCredentialDto
             {
                 Email = auth.Email,
-                Role = auth.Role
+                Role = auth.Role,
+                Token = auth.Token
             };
             return authDto;
         }
