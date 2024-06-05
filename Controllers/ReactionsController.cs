@@ -63,6 +63,51 @@ namespace Ibnt.API.Controllers
 
             return Ok(newReation.AsDto());
         }
+        
+        [HttpPut("events")]
+        public async Task<IActionResult> UpdateEventReaction([FromBody] CreateReactionDto dto)
+        {
+
+            ReactionEventEntity reaction = new();
+
+            reaction.ChangeName(dto.Name);
+            reaction.ChangeMemberId(dto.MemberId);
+            reaction.ChangeEventId(dto.ItemId);
+
+            var newReation = await _repository.Update(reaction);
+
+            return Ok(newReation.AsDto());
+        }
+
+        [HttpPut("bible-messages")]
+        public async Task<IActionResult> UPdateBibleMessageReaction([FromBody] CreateReactionDto dto)
+        {
+
+            ReactionBibleMessageEntity reaction = new();
+
+            reaction.ChangeName(dto.Name);
+            reaction.ChangeMemberId(dto.MemberId);
+            reaction.ChangeBibleMessageId(dto.ItemId);
+
+            var newReation = await _repository.Update(reaction);
+
+            return Ok(newReation.AsDto());
+        }
+
+        [HttpPut("posts")]
+        public async Task<IActionResult> UpdatePostReaction([FromBody] CreateReactionDto dto)
+        {
+
+            ReactionPostEntity reaction = new();
+
+            reaction.ChangeName(dto.Name);
+            reaction.ChangeMemberId(dto.MemberId);
+            reaction.ChangePostId(dto.ItemId);
+
+            var newReation = await _repository.Update(reaction);
+
+            return Ok(newReation.AsDto());
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -117,6 +162,20 @@ namespace Ibnt.API.Controllers
                 var databaseReactions = await _repository.GetReactionsByPostId(postId);
                 var reactionsList = databaseReactions.Select(r => r.AsDto()).ToList();
                 return Ok(reactionsList);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+       
+        [HttpDelete("remove-reaction")]
+        public async Task<IActionResult> RemoveReaction(UntoggleReactionDto dto)
+        {
+            try
+            {
+                await _repository.UntoggleReaction(dto.MemberId,dto.ItemId);
+                return NoContent();
             }
             catch (Exception exception)
             {
