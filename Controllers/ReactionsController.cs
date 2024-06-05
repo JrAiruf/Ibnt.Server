@@ -109,12 +109,27 @@ namespace Ibnt.API.Controllers
             return Ok(newReation.AsDto());
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("events")]
+        public async Task<IActionResult> GetAllEventsReactions()
         {
             try
             {
                 var databaseReactions = await _repository.GetAllEventsReactions();
+                var reactionsList = databaseReactions.Select(r => r.AsDto()).ToList();
+                return Ok(reactionsList);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+        
+        [HttpGet("bible-messages")]
+        public async Task<IActionResult> GetAllBibleMessagesReactions()
+        {
+            try
+            {
+                var databaseReactions = await _repository.GetAllBibleMessagesReactions();
                 var reactionsList = databaseReactions.Select(r => r.AsDto()).ToList();
                 return Ok(reactionsList);
             }
