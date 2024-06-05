@@ -6,7 +6,6 @@ namespace Ibnt.Server.Domain.Entities.Reactions
     public class ReactionBibleMessageEntity : BaseReaction
     {
         public Guid BibleMessageId { get; private set; }
-        public bool Toogled { get; private set; } = true;
         public BibleMessageEntity? BibleMessage { get; private set; }
 
 

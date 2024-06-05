@@ -6,7 +6,6 @@ namespace Ibnt.Server.Domain.Entities.Reactions
     public class ReactionEventEntity : BaseReaction
     {
         public Guid EventId { get; private set; }
-        public bool Toogled { get; private set; } = true;
         public EventEntity? Event { get; private set; }
 
 

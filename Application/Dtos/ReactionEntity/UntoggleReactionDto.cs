@@ -1,9 +1,8 @@
 ﻿namespace Ibnt.Server.Application.Dtos.ReactionEntity
 {
-    public record ToggleReactionDto
+    public record UntoggleReactionDto
     {
-        
         public Guid MemberId { get; init; }
-        public Guid ReactionId { get; init; }
+        public Guid ItemId { get; init; }
     }
 }
