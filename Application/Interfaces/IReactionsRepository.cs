@@ -4,9 +4,9 @@ namespace Ibnt.Server.Application.Interfaces
 {
     public interface IReactionsRepository
     {
-        public Task Create(ReactionEventEntity newReaction);
-        public Task Create(ReactionBibleMessageEntity newReaction);
-        public Task Create(ReactionPostEntity newReaction);
+        public Task<ReactionEventEntity> Create(ReactionEventEntity newReaction);
+        public Task<ReactionBibleMessageEntity> Create(ReactionBibleMessageEntity newReaction);
+        public Task<ReactionPostEntity> Create(ReactionPostEntity newReaction);
         public Task<List<ReactionEventEntity>> GetAllEventsReactions();
         public Task<List<ReactionBibleMessageEntity>> GetAllBibleMessagesReactions();
         public Task<List<ReactionPostEntity>> GetAllPostsReactions();

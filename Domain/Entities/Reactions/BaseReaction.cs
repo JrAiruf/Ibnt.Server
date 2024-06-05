@@ -5,6 +5,7 @@ namespace Ibnt.Server.Domain.Entities.Reactions
     public abstract class BaseReaction
     {
         public string Name { get; private set; }
+        public bool Toogled { get; private set; } = true;
         public Guid MemberId { get; private set; }
         public void ChangeName(string? name)
         {

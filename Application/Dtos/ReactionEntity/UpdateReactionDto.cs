@@ -1,9 +1,9 @@
 ﻿namespace Ibnt.Server.Application.Dtos.ReactionEntity
 {
-    public record CreateBibleMessageReactionDto
+    public record UpdateReactionDto
     {
         public string Name { get; init; }
         public Guid MemberId { get; init; }
-        public Guid BibleMessageId { get; init; }
+        public Guid ItemId { get; init; }
     }
 }

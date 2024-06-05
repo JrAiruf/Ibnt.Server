@@ -6,7 +6,6 @@ namespace Ibnt.Server.Domain.Entities.Reactions
     public class ReactionPostEntity : BaseReaction
     {
         public Guid PostId { get; private set; }
-        public bool Toogled { get; private set; } = true;
         public PostEntity? Post { get; private set; }    
        
 

@@ -20,48 +20,48 @@ namespace Ibnt.API.Controllers
         }
 
         [HttpPost("events")]
-        public async Task<IActionResult> EventReaction([FromBody] CreateEventReactionDto dto)
+        public async Task<IActionResult> EventReaction([FromBody] CreateReactionDto dto)
         {
 
             ReactionEventEntity reaction = new();
 
             reaction.ChangeName(dto.Name);
             reaction.ChangeMemberId(dto.MemberId);
-            reaction.ChangeEventId(dto.EventId);
+            reaction.ChangeEventId(dto.ItemId);
 
-            await _repository.Create(reaction);
+            var newReation = await _repository.Create(reaction);
 
-            return Ok();
+            return Ok(newReation.AsDto());
         }
 
         [HttpPost("bible-messages")]
-        public async Task<IActionResult> BibleMessageReaction([FromBody] CreateBibleMessageReactionDto dto)
+        public async Task<IActionResult> BibleMessageReaction([FromBody] CreateReactionDto dto)
         {
 
             ReactionBibleMessageEntity reaction = new();
 
             reaction.ChangeName(dto.Name);
             reaction.ChangeMemberId(dto.MemberId);
-            reaction.ChangeBibleMessageId(dto.BibleMessageId);
+            reaction.ChangeBibleMessageId(dto.ItemId);
 
-            await _repository.Create(reaction);
+            var newReation = await _repository.Create(reaction);
 
-            return Ok();
+            return Ok(newReation.AsDto());
         }
 
         [HttpPost("posts")]
-        public async Task<IActionResult> PostReaction([FromBody] CreatePostReactionDto dto)
+        public async Task<IActionResult> PostReaction([FromBody] CreateReactionDto dto)
         {
 
             ReactionPostEntity reaction = new();
 
             reaction.ChangeName(dto.Name);
             reaction.ChangeMemberId(dto.MemberId);
-            reaction.ChangePostId(dto.PostId);
+            reaction.ChangePostId(dto.ItemId);
 
-            await _repository.Create(reaction);
+            var newReation = await _repository.Create(reaction);
 
-            return Ok();
+            return Ok(newReation.AsDto());
         }
 
         [HttpGet]

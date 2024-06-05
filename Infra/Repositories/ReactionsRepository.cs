@@ -2,7 +2,6 @@
 using Ibnt.Server.Domain.Entities.Reactions;
 using Ibnt.Server.Infra.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Ibnt.Server.Infra.Repositories
 {
@@ -14,32 +13,35 @@ namespace Ibnt.Server.Infra.Repositories
             _context = context;
         }
 
-        public async Task Create(ReactionEventEntity newReaction)
+        public async Task<ReactionEventEntity> Create(ReactionEventEntity newReaction)
         {
             await _context.EventReactions.AddAsync(newReaction);
-            _context.EventReactions.AsNoTracking();
             await _context.SaveChangesAsync();
+            return newReaction;
         }
 
-        public async Task Create(ReactionBibleMessageEntity newReaction)
+        public async Task<ReactionBibleMessageEntity> Create(ReactionBibleMessageEntity newReaction)
         {
             await _context.BibleMessageReactions.AddAsync(newReaction);
-            _context.BibleMessageReactions.AsNoTracking();
             await _context.SaveChangesAsync();
+            return newReaction;
         }
 
-        public async Task Create(ReactionPostEntity newReaction)
+        public async Task<ReactionPostEntity> Create(ReactionPostEntity newReaction)
         {
             await _context.PostReactions.AddAsync(newReaction);
-            _context.PostReactions.AsNoTracking();
             await _context.SaveChangesAsync();
+            return newReaction;
         }
 
-        public async Task<List<ReactionEventEntity>> GetAllEventsReactions() => await _context.EventReactions.ToListAsync();
+        public async Task<List<ReactionEventEntity>> GetAllEventsReactions() => 
+        await _context.EventReactions.ToListAsync();
 
-        public async Task<List<ReactionBibleMessageEntity>> GetAllBibleMessagesReactions() => await _context.BibleMessageReactions.ToListAsync();
+        public async Task<List<ReactionBibleMessageEntity>> GetAllBibleMessagesReactions() => 
+        await _context.BibleMessageReactions.ToListAsync();
 
-        public async Task<List<ReactionPostEntity>> GetAllPostsReactions() => await _context.PostReactions.ToListAsync();
+        public async Task<List<ReactionPostEntity>> GetAllPostsReactions() => 
+        await _context.PostReactions.ToListAsync();
 
         public async Task<List<ReactionEventEntity>> GetReactionsByEventId(Guid eventId)
         {
