@@ -35,7 +35,7 @@ namespace Ibnt.Server.Application.Extensions
             {
                 Email = auth.Email,
                 Role = auth.Role,
-                Token = auth.Token
+                Token = auth.Token ?? ""
             };
             return authDto;
         }
