@@ -9,12 +9,35 @@ namespace Ibnt.Server.Application.Extensions
         {
             return new EventReactionDto
             {
+                EventId = reaction.EventId,
                 Name = reaction.Name,
                 MemberId = reaction.MemberId,
                 Toogled = reaction.Toogled,
             };
         }
+        
+        public static EventReactionDto AsListDto(this ReactionEventEntity reaction)
+        {
+            return new EventReactionDto
+            {
+                Name = reaction.Name,
+                MemberId = reaction.MemberId,
+                Toogled = reaction.Toogled,
+            };
+        }
+
         public static BibleMessageReactionDto AsDto(this ReactionBibleMessageEntity reaction)
+        {
+            return new BibleMessageReactionDto
+            {
+                BibleMessageId = reaction.BibleMessageId,
+                Name = reaction.Name,
+                MemberId = reaction.MemberId,
+                Toogled = reaction.Toogled
+            };
+        }
+
+        public static BibleMessageReactionDto AsListDto(this ReactionBibleMessageEntity reaction)
         {
             return new BibleMessageReactionDto
             {
@@ -23,7 +46,19 @@ namespace Ibnt.Server.Application.Extensions
                 Toogled = reaction.Toogled
             };
         }
+
         public static PostReactionDto AsDto(this ReactionPostEntity reaction)
+        {
+            return new PostReactionDto
+            {
+                PostId = reaction.PostId,
+                Name = reaction.Name,
+                MemberId = reaction.MemberId,
+                Toogled = reaction.Toogled,
+            };
+        }
+
+        public static PostReactionDto AsListDto(this ReactionPostEntity reaction)
         {
             return new PostReactionDto
             {
