@@ -2,6 +2,7 @@
 {
     public record BibleMessageReactionDto
     {
+        public Guid? BibleMessageId { get; init; }
         public string Name { get; init; }
         public Guid MemberId { get; init; }
         public bool Toogled { get; init; }

@@ -14,28 +14,25 @@ namespace Ibnt.Server.Infra.Repositories
             _context = context;
         }
 
-        public async Task<ReactionEventEntity> Create(ReactionEventEntity newReaction)
+        public async Task Create(ReactionEventEntity newReaction)
         {
             await _context.EventReactions.AddAsync(newReaction);
             await _context.SaveChangesAsync();
-            return newReaction;
         }
 
-        public async Task<ReactionBibleMessageEntity> Create(ReactionBibleMessageEntity newReaction)
+        public async Task Create(ReactionBibleMessageEntity newReaction)
         {
             await _context.BibleMessageReactions.AddAsync(newReaction);
             await _context.SaveChangesAsync();
-            return newReaction;
         }
 
-        public async Task<ReactionPostEntity> Create(ReactionPostEntity newReaction)
+        public async Task Create(ReactionPostEntity newReaction)
         {
             await _context.PostReactions.AddAsync(newReaction);
             await _context.SaveChangesAsync();
-            return newReaction;
         }
 
-        public async Task<ReactionEventEntity> Update(ReactionEventEntity reaction)
+        public async Task Update(ReactionEventEntity reaction)
         {
             var currentEventReaction = await _context.EventReactions
                .FirstOrDefaultAsync(eR =>
@@ -47,7 +44,6 @@ namespace Ibnt.Server.Infra.Repositories
             {
                 _context.EventReactions.Update(currentEventReaction);
                 await _context.SaveChangesAsync();
-                return currentEventReaction;
             }
             else
             {
@@ -55,7 +51,7 @@ namespace Ibnt.Server.Infra.Repositories
             }
         }
 
-        public async Task<ReactionBibleMessageEntity> Update(ReactionBibleMessageEntity reaction)
+        public async Task Update(ReactionBibleMessageEntity reaction)
         {
             var currentBibleMessageReaction = await _context.BibleMessageReactions
             .FirstOrDefaultAsync(eR =>
@@ -67,7 +63,6 @@ namespace Ibnt.Server.Infra.Repositories
             {
                 _context.BibleMessageReactions.Update(currentBibleMessageReaction);
                 await _context.SaveChangesAsync();
-                return currentBibleMessageReaction;
             }
             else
             {
@@ -75,7 +70,7 @@ namespace Ibnt.Server.Infra.Repositories
             }
         }
 
-        public async Task<ReactionPostEntity> Update(ReactionPostEntity reaction)
+        public async Task Update(ReactionPostEntity reaction)
         {
             var currentPostReaction = await _context.PostReactions
            .FirstOrDefaultAsync(eR =>
@@ -87,7 +82,6 @@ namespace Ibnt.Server.Infra.Repositories
             {
                 _context.PostReactions.Update(currentPostReaction);
                 await _context.SaveChangesAsync();
-                return currentPostReaction;
             }
             else
             {

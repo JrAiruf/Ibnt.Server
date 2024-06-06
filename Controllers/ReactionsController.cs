@@ -22,16 +22,17 @@ namespace Ibnt.API.Controllers
         [HttpPost("events")]
         public async Task<IActionResult> EventReaction([FromBody] CreateReactionDto dto)
         {
-
             ReactionEventEntity reaction = new();
 
             reaction.ChangeName(dto.Name);
             reaction.ChangeMemberId(dto.MemberId);
             reaction.ChangeEventId(dto.ItemId);
 
-            var newReation = await _repository.Create(reaction);
+            await _repository.Create(reaction);
 
-            return Ok(newReation.AsDto());
+            var databaseEventsReactions = await _repository.GetAllEventsReactions();
+            var eventsReactions = databaseEventsReactions.Select(e => e.AsDto()).ToList();
+            return Ok(eventsReactions);
         }
 
         [HttpPost("bible-messages")]
@@ -44,9 +45,11 @@ namespace Ibnt.API.Controllers
             reaction.ChangeMemberId(dto.MemberId);
             reaction.ChangeBibleMessageId(dto.ItemId);
 
-            var newReation = await _repository.Create(reaction);
+            await _repository.Create(reaction);
 
-            return Ok(newReation.AsDto());
+            var databaseBibleMessagesReactions = await _repository.GetAllBibleMessagesReactions();
+            var bibleMessagesReactions = databaseBibleMessagesReactions.Select(b => b.AsDto()).ToList();
+            return Ok(bibleMessagesReactions);
         }
 
         [HttpPost("posts")]
@@ -59,13 +62,15 @@ namespace Ibnt.API.Controllers
             reaction.ChangeMemberId(dto.MemberId);
             reaction.ChangePostId(dto.ItemId);
 
-            var newReation = await _repository.Create(reaction);
+            await _repository.Create(reaction);
 
-            return Ok(newReation.AsDto());
+            var databasePostsReactions = await _repository.GetAllPostsReactions();
+            var bibleMessagesReactions = databasePostsReactions.Select(b => b.AsDto()).ToList();
+            return Ok(bibleMessagesReactions);
         }
         
         [HttpPut("events")]
-        public async Task<IActionResult> UpdateEventReaction([FromBody] CreateReactionDto dto)
+        public async Task<IActionResult> UpdateEventReaction([FromBody] UpdateReactionDto dto)
         {
 
             ReactionEventEntity reaction = new();
@@ -74,13 +79,15 @@ namespace Ibnt.API.Controllers
             reaction.ChangeMemberId(dto.MemberId);
             reaction.ChangeEventId(dto.ItemId);
 
-            var newReation = await _repository.Update(reaction);
+            await _repository.Update(reaction);
 
-            return Ok(newReation.AsDto());
+            var databaseEventsReactions = await _repository.GetAllEventsReactions();
+            var eventsReactions = databaseEventsReactions.Select(e => e.AsDto()).ToList();
+            return Ok(eventsReactions);
         }
 
         [HttpPut("bible-messages")]
-        public async Task<IActionResult> UPdateBibleMessageReaction([FromBody] CreateReactionDto dto)
+        public async Task<IActionResult> UpdateBibleMessageReaction([FromBody] UpdateReactionDto dto)
         {
 
             ReactionBibleMessageEntity reaction = new();
@@ -89,13 +96,15 @@ namespace Ibnt.API.Controllers
             reaction.ChangeMemberId(dto.MemberId);
             reaction.ChangeBibleMessageId(dto.ItemId);
 
-            var newReation = await _repository.Update(reaction);
+            await _repository.Update(reaction);
 
-            return Ok(newReation.AsDto());
+            var databaseBibleMessagesReactions = await _repository.GetAllBibleMessagesReactions();
+            var bibleMessagesReactions = databaseBibleMessagesReactions.Select(b => b.AsDto()).ToList();
+            return Ok(bibleMessagesReactions);
         }
 
         [HttpPut("posts")]
-        public async Task<IActionResult> UpdatePostReaction([FromBody] CreateReactionDto dto)
+        public async Task<IActionResult> UpdatePostReaction([FromBody] UpdateReactionDto dto)
         {
 
             ReactionPostEntity reaction = new();
@@ -104,9 +113,11 @@ namespace Ibnt.API.Controllers
             reaction.ChangeMemberId(dto.MemberId);
             reaction.ChangePostId(dto.ItemId);
 
-            var newReation = await _repository.Update(reaction);
+            await _repository.Update(reaction);
 
-            return Ok(newReation.AsDto());
+            var databasePostsReactions = await _repository.GetAllPostsReactions();
+            var bibleMessagesReactions = databasePostsReactions.Select(b => b.AsDto()).ToList();
+            return Ok(bibleMessagesReactions);
         }
 
         [HttpGet("events")]
