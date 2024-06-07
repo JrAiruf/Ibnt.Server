@@ -12,7 +12,7 @@ namespace Ibnt.Server.Application.Extensions
                 EventId = reaction.EventId,
                 Name = reaction.Name,
                 MemberId = reaction.MemberId,
-                Toogled = reaction.Toogled,
+                Toggled = reaction.Toogled,
             };
         }
         
@@ -22,7 +22,7 @@ namespace Ibnt.Server.Application.Extensions
             {
                 Name = reaction.Name,
                 MemberId = reaction.MemberId,
-                Toogled = reaction.Toogled,
+                Toggled = reaction.Toogled,
             };
         }
 
@@ -33,7 +33,7 @@ namespace Ibnt.Server.Application.Extensions
                 BibleMessageId = reaction.BibleMessageId,
                 Name = reaction.Name,
                 MemberId = reaction.MemberId,
-                Toogled = reaction.Toogled
+                Toggled = reaction.Toogled
             };
         }
 
@@ -43,7 +43,7 @@ namespace Ibnt.Server.Application.Extensions
             {
                 Name = reaction.Name,
                 MemberId = reaction.MemberId,
-                Toogled = reaction.Toogled
+                Toggled = reaction.Toogled
             };
         }
 
@@ -54,7 +54,7 @@ namespace Ibnt.Server.Application.Extensions
                 PostId = reaction.PostId,
                 Name = reaction.Name,
                 MemberId = reaction.MemberId,
-                Toogled = reaction.Toogled,
+                Toggled = reaction.Toogled,
             };
         }
 
@@ -64,7 +64,7 @@ namespace Ibnt.Server.Application.Extensions
             {
                 Name = reaction.Name,
                 MemberId = reaction.MemberId,
-                Toogled = reaction.Toogled,
+                Toggled = reaction.Toogled,
             };
         }
     }
