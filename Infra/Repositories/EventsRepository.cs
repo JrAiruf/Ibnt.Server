@@ -36,13 +36,16 @@ namespace Ibnt.Server.Infra.Repositories
             return currentEvent;
         }
 
-        public Task<EventEntity> Update(Guid id)
+        public Task<EventEntity> Update(Guid id, EventEntity eventToUpdate)
         {
             throw new NotImplementedException();
         }
-        public Task Delete(Guid id, EventEntity eventToUpdate)
+
+        public async Task Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var currentEvent = await GetById(id);
+            _context.Events.Remove(currentEvent);
+            await _context.SaveChangesAsync();
         }
     }
 }

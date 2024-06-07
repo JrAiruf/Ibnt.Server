@@ -89,5 +89,22 @@ namespace Ibnt.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
             }
         }
+
+        [HttpGet("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                await _repository.Delete(id);
+                return NoContent();
+            }
+            catch (Exception exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+
     }
 }

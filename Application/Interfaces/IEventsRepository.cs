@@ -7,7 +7,7 @@ namespace Ibnt.Server.Application.Interfaces
         public Task<EventEntity> Create(EventEntity newEvent);
         public Task<IEnumerable<EventEntity>> GetAll();
         public Task<EventEntity> GetById(Guid id);
-        public Task<EventEntity> Update(Guid id);
-        public Task Delete(Guid id, EventEntity eventToUpdate);
+        public Task<EventEntity> Update(Guid id, EventEntity eventToUpdate);
+        public Task Delete(Guid id);
     }
 }
