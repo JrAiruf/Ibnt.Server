@@ -90,7 +90,7 @@ namespace Ibnt.API.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
