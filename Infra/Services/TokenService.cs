@@ -12,7 +12,7 @@ namespace Ibnt.Server.Infra.Services
         public string GenerateToken(AuthCredentialEntity auth)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var secretKey = Encoding.ASCII.GetBytes(Secrets.SecretKey);
+            var secretKey = Encoding.ASCII.GetBytes(Secrets.SecretKey!);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -21,11 +21,19 @@ namespace Ibnt.Server.Infra.Services
                 new Claim(ClaimTypes.Email,auth.Email),
                 new Claim(ClaimTypes.Role,auth.Role),
              }),
-                Expires = DateTime.UtcNow.AddDays(1),
+                Expires = DateTime.UtcNow.AddDays(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public bool ValidateToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var currentToken = tokenHandler.ReadToken(token);
+            bool validToken = DateTime.UtcNow.CompareTo(currentToken.ValidTo) <= 0;
+            return validToken;
         }
     }
 }

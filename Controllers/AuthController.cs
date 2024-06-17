@@ -6,7 +6,6 @@ using Ibnt.Server.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
-using RestSharp.Serialization.Json;
 using System.Net;
 
 namespace Ibnt.API.Controllers
@@ -55,7 +54,6 @@ namespace Ibnt.API.Controllers
                 else
                 {
                     return Unauthorized();
-
                 }
             }
             catch (AppException exception)
@@ -72,6 +70,32 @@ namespace Ibnt.API.Controllers
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
                 }
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+        
+        [HttpPost("verify-token/{token}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> VerifyToken(string token)
+        {
+            try
+            {
+                var validToken = _tokenService.ValidateToken(token);
+                if (validToken)
+                {
+                return Ok();
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            catch (AppException exception)
+            {
+                return Unauthorized(exception.Message);
             }
             catch (Exception exception)
             {
