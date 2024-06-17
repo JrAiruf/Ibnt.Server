@@ -11,7 +11,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<IbntDbContext>(); 
+builder.Services.AddDbContext<IbntDbContext>();
 
 var context = builder.Configuration.Get<IbntDbContext>();
 
@@ -41,7 +41,7 @@ builder.Services.AddScoped<RestClient>();
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
 builder.WebHost.UseUrls($"http://*[::1]:{port}");
 
-var secretKey = Encoding.ASCII.GetBytes(Secrets.SecretKey);
+var secretKey = Encoding.ASCII.GetBytes(Secrets.SecretKey!);
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -76,14 +76,13 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddAuthentication(
-    options =>
+builder.Services
+    .AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     })
-    .AddJwtBearer(
-    jwt =>
+    .AddJwtBearer(jwt =>
     {
         jwt.RequireHttpsMetadata = false;
         jwt.SaveToken = true;
@@ -93,7 +92,6 @@ builder.Services.AddAuthentication(
             IssuerSigningKey = new SymmetricSecurityKey(secretKey),
             ValidateIssuer = false,
             ValidateAudience = false,
-
         };
     });
 
