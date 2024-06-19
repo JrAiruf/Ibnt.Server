@@ -9,14 +9,11 @@ namespace Ibnt.Server.Infra.Config
         public static string? PASSWORD = Environment.GetEnvironmentVariable("PGPASSWORD");
         public static string? USER = Environment.GetEnvironmentVariable("PGUSER");
         public static string? PORT = Environment.GetEnvironmentVariable("PGPORT");
+        public static string? DATABASE = Environment.GetEnvironmentVariable("PGDATABASE");
 
         public static string ConnectionStringValue()
         {
-            HOST = HOST ?? "localhost";
-            PASSWORD = PASSWORD ?? "12345678";
-            USER = USER ?? "jradmin";
-            PORT = PORT ?? "41357";
-            return $"host={HOST}:{PORT};userid={USER};password={PASSWORD}";
+            return $"host={HOST}:{PORT};userid={USER};password={PASSWORD};Database={DATABASE}";
         }
 
         public static void ApplyMigrations(IbntDbContext context)
