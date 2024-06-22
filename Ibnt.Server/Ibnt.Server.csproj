@@ -7,6 +7,7 @@
     <UserSecretsId>a2f5c7d3-4da2-4fa0-b570-290bf55040b6</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +30,12 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
     <PackageReference Include="RestSharp" Version="106.10.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Application\App.Application.csproj" />
+    <ProjectReference Include="..\App.Domain\App.Domain.csproj" />
+    <ProjectReference Include="..\App.Infra\App.Infra.csproj" />
   </ItemGroup>
 
 </Project>

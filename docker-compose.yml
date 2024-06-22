@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: ibnt-db
+    environment:
+        POSTGRES_USER: "jradmin"
+        POSTGRES_PASSWORD: "12345678"
+        PGHOST: "localhost"
+        PGDATABASE: "ibntDb"
+    ports:
+      - 5432:5432
+
+  ibnt.server:
+    container_name: ibnt-api
+    build:
+        context: .
+        dockerfile: Ibnt.Server/Dockerfile
+    depends_on:
+        - db
+    restart: on-failure
+    environment:
+        ASPNETCORE_ENVIRONMENT: "Development"
+        PGHOST: "ibnt-db"
+        PGPASSWORD: "12345678"
+        PGUSER: "jradmin"
+        PGPORT: 5432
+        PGDATABASE: "ibntDb"
+        SECRET_KEY: "asld34lqkasldfkj02900asdf"
+        PORT: 8080
+    ports:
+        - "8080:8080"
+        - "8081:8081"
