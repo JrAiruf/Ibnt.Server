@@ -1,0 +1,7 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "./Ibnt.Server/Dockerfile"
+
+[deploy]
+startCommand = "dotnet Ibnt.Server.dll"
+restartPolicyType = "never"
