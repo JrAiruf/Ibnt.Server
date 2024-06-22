@@ -15,7 +15,7 @@ builder.Services.AddDbContext<IbntDbContext>();
 
 var context = builder.Configuration.Get<IbntDbContext>();
 
-if(context != null)
+if (context != null)
 {
     ApiConfiguration.ApplyMigrations(context);
 }
@@ -38,7 +38,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddScoped<RestClient>();
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+var port = Environment.GetEnvironmentVariable("PORT");
 builder.WebHost.UseUrls($"http://*[::1]:{port}");
 
 var secretKey = Encoding.ASCII.GetBytes(Secrets.SecretKey!);
@@ -107,8 +107,8 @@ app.UseCors(
     opt =>
     {
         opt.AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowAnyOrigin();
+           .AllowAnyMethod()
+           .AllowAnyOrigin();
     });
 
 app.UseAuthentication();
