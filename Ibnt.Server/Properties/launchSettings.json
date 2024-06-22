@@ -6,7 +6,7 @@
             "launchUrl": "swagger",
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "SECRET_KEY": "Secret_key_for_development_Enviroment_Value_4lkadjak3kqweh"
+                "SECRET_KEY": "Secret_key_for_development_Enviroment_Value_4lkadjak3kqweh",
                 "PGHOST": "localhost",
                 "PGPASSWORD": "12345678",
                 "PGUSER": "jradmin",
