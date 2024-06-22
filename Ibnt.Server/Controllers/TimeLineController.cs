@@ -1,6 +1,6 @@
-﻿using Ibnt.Server.Application.Extensions;
-using Ibnt.Server.Application.Interfaces;
-using Ibnt.Server.Domain.Exceptions;
+﻿using App.Application.Extensions;
+using App.Application.Interfaces;
+using App.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

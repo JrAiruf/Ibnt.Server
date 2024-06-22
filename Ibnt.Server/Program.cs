@@ -1,8 +1,8 @@
-using Ibnt.Server.Application.Interfaces;
-using Ibnt.Server.Infra.Config;
-using Ibnt.Server.Infra.Data;
-using Ibnt.Server.Infra.Repositories;
-using Ibnt.Server.Infra.Services;
+using App.Application.Interfaces;
+using App.Infra.Config;
+using App.Infra.Data;
+using App.Infra.Repositories;
+using App.Infra.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;

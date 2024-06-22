@@ -1,12 +1,12 @@
-﻿using Ibnt.Server.Application.Dtos.ReactionEntity;
-using Ibnt.Server.Application.Extensions;
-using Ibnt.Server.Application.Interfaces;
-using Ibnt.Server.Domain.Entities.Reactions;
+﻿using App.Application.Dtos.ReactionEntity;
+using App.Application.Extensions;
+using App.Application.Interfaces;
+using App.Domain.Entities.Reactions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
-namespace Ibnt.API.Controllers
+namespace Ibnt.Server.API.Controllers
 {
     [ApiController]
     [Authorize]
