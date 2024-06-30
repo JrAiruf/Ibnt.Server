@@ -23,10 +23,7 @@ namespace App.Infra.Config
             IbntDbContext? context = builder.Configuration.Get<IbntDbContext>();
             if (context != null)
             {
-                if (context.Database.EnsureCreated())
-                {
-                    context.Database.Migrate();
-                }
+                context.Database.Migrate();
             }
             return builder;
         }
