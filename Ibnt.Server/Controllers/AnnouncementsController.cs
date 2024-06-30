@@ -72,5 +72,20 @@ namespace Ibnt.Server.Controllers
                 return TypedResults.Ok(announcement!.AsDto());
             }
         }
+        
+        [HttpDelete("{id}")]
+        public async Task<Results<NotFound<string>, Ok<Guid>>> DeleteAsync(Guid id)
+        {
+            (AppException? exception, Guid? announcementId) = await _repository.DeleteAsync(id);
+
+            if (exception != null)
+            {
+                return TypedResults.NotFound(exception.Message);
+            }
+            else
+            {
+                return TypedResults.Ok(announcementId!.Value);
+            }
+        }
     }
 }

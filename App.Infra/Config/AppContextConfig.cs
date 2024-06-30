@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.TeamFoundation.Common;
 
 namespace App.Infra.Config
 {
@@ -22,7 +23,10 @@ namespace App.Infra.Config
             IbntDbContext? context = builder.Configuration.Get<IbntDbContext>();
             if (context != null)
             {
+                if (context.Database.EnsureCreated())
+                {
                     context.Database.Migrate();
+                }
             }
             return builder;
         }

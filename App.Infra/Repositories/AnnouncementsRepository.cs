@@ -68,8 +68,7 @@ namespace App.Infra.Repositories
                 var (exception, announcement) = await GetByIdAsync(id);
                 if (announcement == null)
                 {
-                    return Tuple.Create<AppException?, AnnouncementEntity?>
-                   (new AnnouncementException($"Item não encontrado. ID: {id}"), null);
+                    return Tuple.Create<AppException?, AnnouncementEntity?>(exception, null);
                 }
                 else
                 {
@@ -91,9 +90,27 @@ namespace App.Infra.Repositories
             }
         }
 
-        public Task Delete(Guid id)
+        public async Task<Tuple<AppException?, Guid?>> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var (exception, announcement) = await GetByIdAsync(id);
+                if (announcement == null)
+                {
+                    return Tuple.Create<AppException?, Guid?>(exception, null);
+                }
+                else
+                {
+                    _context.Announcement.Remove(announcement);
+                    await _context.SaveChangesAsync();
+
+                    return Tuple.Create<AppException?, Guid?>(null, id);
+                }
+            }
+            catch (AppException exception)
+            {
+                return Tuple.Create<AppException?, Guid?>(exception, null);
+            }
         }
 
     }

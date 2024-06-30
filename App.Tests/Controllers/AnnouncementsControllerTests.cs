@@ -113,6 +113,7 @@ namespace App.Tests.Controllers
 
             var result = await _controller.UpdateAsync(id, AnnouncementMocks.updateDto);
             _repositoryMock.Verify((r) => r.UpdateAsync(id, AnnouncementMocks.updateDto), Times.Once());
+
             Assert.NotNull(result);
             Assert.IsType<Results<BadRequest<string>, Ok<AnnouncementDto>>>(result);
             Assert.IsType<BadRequest<string>>(result.Result);
@@ -130,9 +131,46 @@ namespace App.Tests.Controllers
 
             var result = await _controller.UpdateAsync(id, AnnouncementMocks.updateDto);
             _repositoryMock.Verify((r) => r.UpdateAsync(id, AnnouncementMocks.updateDto), Times.Once());
+
             Assert.NotNull(result);
             Assert.IsType<Results<BadRequest<string>, Ok<AnnouncementDto>>>(result);
             Assert.IsType<Ok<AnnouncementDto>>(result.Result);
+        }
+
+        [Fact]
+        public async Task Should_Return_Not_Found_Status_Due_To_Fail_Deleting()
+        {
+            Guid id = Guid.NewGuid();
+            _repositoryMock.Setup(r => r.DeleteAsync(id))
+                           .ReturnsAsync(Tuple.Create<AppException?, Guid?>
+                           (
+                               new AnnouncementException("Erro ao Deletar."), null)
+                           );
+
+            var result = await _controller.DeleteAsync(id);
+            _repositoryMock.Verify((r) => r.DeleteAsync(id), Times.Once());
+
+            Assert.NotNull(result);
+            Assert.IsType<Results<NotFound<string>, Ok<Guid>>>(result);
+            Assert.IsType<NotFound<string>>(result.Result);
+        }
+
+        [Fact]
+        public async Task Should_Return_Ok_Status_With_Id_Of_Deleted_Announcement()
+        {
+            Guid id = Guid.NewGuid();
+            _repositoryMock.Setup(r => r.DeleteAsync(id))
+                           .ReturnsAsync(Tuple.Create<AppException?, Guid?>
+                           (
+                               null, id)
+                           );
+
+            var result = await _controller.DeleteAsync(id);
+            _repositoryMock.Verify((r) => r.DeleteAsync(id), Times.Once());
+
+            Assert.NotNull(result);
+            Assert.IsType<Results<NotFound<string>, Ok<Guid>>>(result);
+            Assert.IsType<Ok<Guid>>(result.Result);
         }
     }
 }

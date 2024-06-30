@@ -143,7 +143,7 @@ namespace App.Infra.Data
                 announcement.HasKey(a => a.Id);
                 announcement.HasOne(a => a.Member).WithMany(m => m.Announcements);
             });
-            
+
             modelBuilder.Entity<AnnouncementEntity>(announcement =>
             {
                 announcement.Property(a => a.MemberId).HasConversion(typeof(string));

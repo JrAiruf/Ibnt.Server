@@ -10,6 +10,6 @@ namespace App.Application.Interfaces
         public Task<List<AnnouncementEntity>> GetAllAsync();
         public Task<Tuple<AppException?, AnnouncementEntity?>> GetByIdAsync(Guid id);
         public Task<Tuple<AppException?, AnnouncementEntity?>> UpdateAsync(Guid id, UpdateAnnouncementDto announcement);
-        public Task Delete(Guid id);
+        public Task<Tuple<AppException?, Guid?>> DeleteAsync(Guid id);
     }
 }
