@@ -1,112 +1,28 @@
-using App.Application.Interfaces;
 using App.Infra.Config;
-using App.Infra.Data;
-using App.Infra.Repositories;
-using App.Infra.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using RestSharp;
-using System.Text;
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddDbContext<IbntDbContext>();
-
-var context = builder.Configuration.Get<IbntDbContext>();
-
-if (context != null)
-{
-    ApiConfiguration.ApplyMigrations(context);
-}
-
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-
-builder.Services.AddScoped<IMembersRepository, MembersRepository>();
-
-builder.Services.AddScoped<ITimeLineRepository, TimeLineRepository>();
-
-builder.Services.AddScoped<IEventsRepository, EventsRepository>();
-
-builder.Services.AddScoped<IBibleMessagesRepository, BibleMessagesRepository>();
-
-builder.Services.AddScoped<IReactionsRepository, ReactionsRepository>();
-
-builder.Services.AddScoped<IHashService, HashService>();
-
-builder.Services.AddScoped<ITokenService, TokenService>();
-
-builder.Services.AddScoped<RestClient>();
-
-var port = Environment.GetEnvironmentVariable("PORT");
-builder.WebHost.UseUrls($"http://*[::1]:{port}");
-
-var secretKey = Encoding.ASCII.GetBytes(Secrets.SecretKey!);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
-    });
+builder.ConfigEnviroment();
+builder.Inject();
+builder.Migrate();
+builder.ConfigAuth();
+builder.ConfigSwagger();
 
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement()
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                },
-                Scheme = "oauth2",
-                Name = "Bearer",
-                In = ParameterLocation.Header,
-            },
-            new List<String>()
-        }
-    });
-});
-
-builder.Services
-    .AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(jwt =>
-    {
-        jwt.RequireHttpsMetadata = false;
-        jwt.SaveToken = true;
-        jwt.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(secretKey),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-        };
-    });
-
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    _ = app.UseSwagger();
+    _ = app.UseSwaggerUI();
 }
 
 app.UseCors(
     opt =>
     {
-        opt.AllowAnyHeader()
+        _ = opt.AllowAnyHeader()
            .AllowAnyMethod()
            .AllowAnyOrigin();
     });

@@ -1,9 +1,11 @@
 ﻿using App.Infra.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace App.Infra.Config
 {
-    public class ApiConfiguration
+    public static class AppContextConfig
     {
         public static string? HOST = Environment.GetEnvironmentVariable("PGHOST");
         public static string? PASSWORD = Environment.GetEnvironmentVariable("PGPASSWORD");
@@ -15,15 +17,14 @@ namespace App.Infra.Config
         {
             return $"host={HOST}:{PORT};userid={USER};password={PASSWORD};Database={DATABASE}";
         }
-
-        public static void ApplyMigrations(IbntDbContext context)
+        public static WebApplicationBuilder Migrate(this WebApplicationBuilder builder)
         {
-            if (context.Database.GetPendingMigrations().Any())
+            IbntDbContext? context = builder.Configuration.Get<IbntDbContext>();
+            if (context != null)
             {
-                context.Database.Migrate();
+                    context.Database.Migrate();
             }
+            return builder;
         }
     }
 }
-
-    

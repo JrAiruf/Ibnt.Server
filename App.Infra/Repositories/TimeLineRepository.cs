@@ -33,7 +33,7 @@ namespace App.Infra.Repositories
         public async Task PostEvent(Guid eventId)
         {
             TimeLineEntity? timeline = await GetTimeLineAsync();
-            EventEntity? currentEvent = await _context.Events.FindAsync(eventId);
+            EventEntity? currentEvent = await _context.Event.FindAsync(eventId);
             if (currentEvent != null)
             {
                 bool alreadyInTimeine = timeline.Events
@@ -59,7 +59,7 @@ namespace App.Infra.Repositories
         public async Task PostBibleMessage(Guid messageId)
         {
             TimeLineEntity? timeline = await GetTimeLineAsync();
-            var currentBibleMessage = await _context.BibleMessages.FindAsync(messageId);
+            var currentBibleMessage = await _context.BibleMessage.FindAsync(messageId);
             if (currentBibleMessage != null)
             {
                 bool alreadyInTimeine = timeline.BibleMessages

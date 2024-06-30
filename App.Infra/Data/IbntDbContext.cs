@@ -1,4 +1,5 @@
 ﻿
+using App.Domain.Entities.Announcement;
 using App.Domain.Entities.Reactions;
 using App.Domain.Entities.TimeLine;
 using App.Domain.Entities.Users;
@@ -14,25 +15,28 @@ namespace App.Infra.Data
         {
             if (!options.IsConfigured)
             {
-                options.UseNpgsql(ApiConfiguration.ConnectionStringValue());
+                options.UseNpgsql(AppContextConfig.ConnectionStringValue());
             }
         }
 
         //USERS
-        public DbSet<MemberEntity> Members { get; set; }
-        public DbSet<AuthCredentialEntity> Credentials { get; set; }
-        public DbSet<RecoveryPasswordEntity> RecoveryPasswords { get; set; }
+        public DbSet<MemberEntity> Member { get; set; }
+        public DbSet<AuthCredentialEntity> Credential { get; set; }
+        public DbSet<RecoveryPasswordEntity> RecoveryPassword { get; set; }
 
         //TIMELINE
         public DbSet<TimeLineEntity> TimeLine { get; set; }
-        public DbSet<EventEntity> Events { get; set; }
-        public DbSet<BibleMessageEntity> BibleMessages { get; set; }
-        public DbSet<PostEntity> Posts { get; set; }
+        public DbSet<EventEntity> Event { get; set; }
+        public DbSet<BibleMessageEntity> BibleMessage { get; set; }
+        public DbSet<PostEntity> Post { get; set; }
 
         //REACTIONS
-        public DbSet<ReactionEventEntity> EventReactions { get; set; }
-        public DbSet<ReactionBibleMessageEntity> BibleMessageReactions { get; set; }
-        public DbSet<ReactionPostEntity> PostReactions { get; set; }
+        public DbSet<ReactionEventEntity> EventReaction { get; set; }
+        public DbSet<ReactionBibleMessageEntity> BibleMessageReaction { get; set; }
+        public DbSet<ReactionPostEntity> PostReaction { get; set; }
+
+        //ANNOUNCEMENTS
+        public DbSet<AnnouncementEntity> Announcement { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -134,7 +138,12 @@ namespace App.Infra.Data
                             reaction.Property(r => r.MemberId).HasConversion(typeof(string));
                             reaction.Property(r => r.PostId).HasConversion(typeof(string));
                         });
-
+            modelBuilder.Entity<AnnouncementEntity>(announcement =>
+            {
+                announcement.HasKey(a => a.Id);
+                announcement.Property(a => a.MemberId).HasConversion(typeof(string));
+                announcement.Property(a => a.Date).HasConversion(typeof(string));
+            });
         }
     }
 }

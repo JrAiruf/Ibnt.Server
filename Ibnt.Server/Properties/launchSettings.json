@@ -11,7 +11,8 @@
                 "PGPASSWORD": "12345678",
                 "PGUSER": "jradmin",
                 "PGPORT": "41357",
-                "PGDATABASE": "ibntDb"
+                "PGDATABASE": "ibntDb",
+                "PORT": "8080"
             },
             "dotnetRunMessages": true,
             "applicationUrl": "http://localhost:5080",
@@ -27,7 +28,8 @@
                 "PGPASSWORD": "12345678",
                 "PGUSER": "jradmin",
                 "PGPORT": "41357",
-                "PGDATABASE": "ibntDb"
+                "PGDATABASE": "ibntDb",
+                "PORT": "8081"
             },
             "dotnetRunMessages": true,
             "applicationUrl": "https://localhost:7267;http://localhost:5080"

@@ -15,18 +15,18 @@ namespace App.Infra.Repositories
         }
         public async Task<MemberEntity> Create(MemberEntity member)
         {
-            var registeredCredential = await _context.Credentials
+            var registeredCredential = await _context.Credential
               .Where(c => c.Email == member.Credential!.Email)
               .FirstOrDefaultAsync();
             if (registeredCredential != null)
             {
                 throw new ExistingUserException("E-mail já cadastrado. Utilize outro e-mail para criar sua conta.");
             }
-            await _context.Members.AddAsync(member);
-            await _context.Credentials.AddAsync(member.Credential!);
+            await _context.Member.AddAsync(member);
+            await _context.Credential.AddAsync(member.Credential!);
             await _context.SaveChangesAsync();
 
-            var createdMember = await _context.Members
+            var createdMember = await _context.Member
                .IgnoreAutoIncludes()
                .Include(m => m.Credential)
                .FirstOrDefaultAsync(m => m.Id == member.Id);
@@ -34,11 +34,11 @@ namespace App.Infra.Repositories
             return createdMember;
         }
 
-        public async Task<IEnumerable<MemberEntity>> GetAll() => await _context.Members.IgnoreAutoIncludes().ToListAsync();
+        public async Task<IEnumerable<MemberEntity>> GetAll() => await _context.Member.IgnoreAutoIncludes().ToListAsync();
 
         public async Task<MemberEntity> GetById(Guid id)
         {
-            var currentMember = await _context.Members
+            var currentMember = await _context.Member
                 .IgnoreAutoIncludes()
                 .Include(m => m.Credential)
                 .Include(m => m.BibleMessages)

@@ -16,25 +16,25 @@ namespace App.Infra.Repositories
 
         public async Task Create(ReactionEventEntity newReaction)
         {
-            await _context.EventReactions.AddAsync(newReaction);
+            await _context.EventReaction.AddAsync(newReaction);
             await _context.SaveChangesAsync();
         }
 
         public async Task Create(ReactionBibleMessageEntity newReaction)
         {
-            await _context.BibleMessageReactions.AddAsync(newReaction);
+            await _context.BibleMessageReaction.AddAsync(newReaction);
             await _context.SaveChangesAsync();
         }
 
         public async Task Create(ReactionPostEntity newReaction)
         {
-            await _context.PostReactions.AddAsync(newReaction);
+            await _context.PostReaction.AddAsync(newReaction);
             await _context.SaveChangesAsync();
         }
 
         public async Task Update(ReactionEventEntity reaction)
         {
-            var currentEventReaction = await _context.EventReactions
+            var currentEventReaction = await _context.EventReaction
                .FirstOrDefaultAsync(eR =>
                eR.MemberId == reaction.MemberId &&
                eR.EventId == reaction.EventId);
@@ -42,7 +42,7 @@ namespace App.Infra.Repositories
             currentEventReaction?.ChangeName(reaction.Name);
             if (currentEventReaction != null)
             {
-                _context.EventReactions.Update(currentEventReaction);
+                _context.EventReaction.Update(currentEventReaction);
                 await _context.SaveChangesAsync();
             }
             else
@@ -53,7 +53,7 @@ namespace App.Infra.Repositories
 
         public async Task Update(ReactionBibleMessageEntity reaction)
         {
-            var currentBibleMessageReaction = await _context.BibleMessageReactions
+            var currentBibleMessageReaction = await _context.BibleMessageReaction
             .FirstOrDefaultAsync(eR =>
             eR.MemberId == reaction.MemberId &&
             eR.BibleMessageId == reaction.BibleMessageId);
@@ -61,7 +61,7 @@ namespace App.Infra.Repositories
             currentBibleMessageReaction?.ChangeName(reaction.Name);
             if (currentBibleMessageReaction != null)
             {
-                _context.BibleMessageReactions.Update(currentBibleMessageReaction);
+                _context.BibleMessageReaction.Update(currentBibleMessageReaction);
                 await _context.SaveChangesAsync();
             }
             else
@@ -72,7 +72,7 @@ namespace App.Infra.Repositories
 
         public async Task Update(ReactionPostEntity reaction)
         {
-            var currentPostReaction = await _context.PostReactions
+            var currentPostReaction = await _context.PostReaction
            .FirstOrDefaultAsync(eR =>
            eR.MemberId == reaction.MemberId &&
            eR.PostId == reaction.PostId);
@@ -80,7 +80,7 @@ namespace App.Infra.Repositories
             currentPostReaction?.ChangeName(reaction.Name);
             if (currentPostReaction != null)
             {
-                _context.PostReactions.Update(currentPostReaction);
+                _context.PostReaction.Update(currentPostReaction);
                 await _context.SaveChangesAsync();
             }
             else
@@ -92,67 +92,67 @@ namespace App.Infra.Repositories
         public async Task UntoggleReaction(Guid memberId, Guid itemId)
         {
 
-            bool isEventEntity = _context.EventReactions
+            bool isEventEntity = _context.EventReaction
                 .Where(eR =>
                 eR.MemberId == memberId &&
                 eR.EventId == itemId).ToList().Any();
 
             if (isEventEntity)
             {
-                var currentEventReaction = await _context.EventReactions
+                var currentEventReaction = await _context.EventReaction
                 .FirstOrDefaultAsync(eR =>
                 eR.MemberId == memberId &&
                 eR.EventId == itemId);
-                _context.EventReactions.Remove(currentEventReaction);
+                _context.EventReaction.Remove(currentEventReaction);
                 await _context.SaveChangesAsync();
                 return;
             }
 
-            bool isBibleMessageEntity = _context.BibleMessageReactions
+            bool isBibleMessageEntity = _context.BibleMessageReaction
                 .Where(eR =>
                 eR.MemberId == memberId &&
                 eR.BibleMessageId == itemId).ToList().Any();
 
             if (isBibleMessageEntity)
             {
-                var currentBibleMessageReaction = await _context.BibleMessageReactions
+                var currentBibleMessageReaction = await _context.BibleMessageReaction
                 .FirstOrDefaultAsync(eR =>
                 eR.MemberId == memberId &&
                 eR.BibleMessageId == itemId);
-                _context.BibleMessageReactions.Remove(currentBibleMessageReaction);
+                _context.BibleMessageReaction.Remove(currentBibleMessageReaction);
                 await _context.SaveChangesAsync();
                 return;
             }
 
-            bool isPostEntity = _context.PostReactions
+            bool isPostEntity = _context.PostReaction
                 .Where(eR =>
                 eR.MemberId == memberId &&
                 eR.PostId == itemId).ToList().Any();
 
             if (isPostEntity)
             {
-                var currentPostReaction = await _context.PostReactions
+                var currentPostReaction = await _context.PostReaction
                 .FirstOrDefaultAsync(eR =>
                 eR.MemberId == memberId &&
                 eR.PostId == itemId);
-                _context.PostReactions.Remove(currentPostReaction);
+                _context.PostReaction.Remove(currentPostReaction);
                 await _context.SaveChangesAsync();
                 return;
             }
         }
 
         public async Task<List<ReactionEventEntity>> GetAllEventsReactions() =>
-        await _context.EventReactions.Where(eR => eR.Toogled == true).ToListAsync();
+        await _context.EventReaction.Where(eR => eR.Toogled == true).ToListAsync();
 
         public async Task<List<ReactionBibleMessageEntity>> GetAllBibleMessagesReactions() =>
-        await _context.BibleMessageReactions.Where(bM => bM.Toogled == true).ToListAsync();
+        await _context.BibleMessageReaction.Where(bM => bM.Toogled == true).ToListAsync();
 
         public async Task<List<ReactionPostEntity>> GetAllPostsReactions() =>
-        await _context.PostReactions.Where(p => p.Toogled == true).ToListAsync();
+        await _context.PostReaction.Where(p => p.Toogled == true).ToListAsync();
 
         public async Task<List<ReactionEventEntity>> GetReactionsByEventId(Guid eventId)
         {
-            var reactions = await _context.EventReactions
+            var reactions = await _context.EventReaction
             .Where(reaction =>
             reaction.EventId == eventId)
             .ToListAsync();
@@ -162,7 +162,7 @@ namespace App.Infra.Repositories
 
         public async Task<List<ReactionBibleMessageEntity>> GetReactionsByBibleMessageId(Guid messageId)
         {
-            var reactions = await _context.BibleMessageReactions
+            var reactions = await _context.BibleMessageReaction
             .Where(reaction =>
            reaction.BibleMessageId == messageId)
            .ToListAsync();
@@ -172,7 +172,7 @@ namespace App.Infra.Repositories
 
         public async Task<List<ReactionPostEntity>> GetReactionsByPostId(Guid postId)
         {
-            var reactions = await _context.PostReactions
+            var reactions = await _context.PostReaction
            .Where(reaction =>
            reaction.PostId == postId)
            .ToListAsync();

@@ -14,23 +14,20 @@ namespace App.Infra.Repositories
         }
         public async Task<EventEntity> Create(EventEntity newEvent)
         {
-            await _context.Events.AddAsync(newEvent);
+            await _context.Event.AddAsync(newEvent);
             await _context.SaveChangesAsync();
-            var createdEvent = await _context.Events
-                .IgnoreAutoIncludes()
-                .FirstOrDefaultAsync(e => e.Id == newEvent.Id);
-            return createdEvent!;
+            return newEvent;
         }
 
         public async Task<IEnumerable<EventEntity>> GetAll()
         {
-            var eventsList = await _context.Events.IgnoreAutoIncludes().ToListAsync();
+            var eventsList = await _context.Event.IgnoreAutoIncludes().ToListAsync();
             return eventsList;
         }
 
         public async Task<EventEntity?> GetById(Guid id)
         {
-            var currentEvent = await _context.Events
+            var currentEvent = await _context.Event
                 .Include(e => e.Reactions)
                 .FirstOrDefaultAsync(e => e.Id == id);
             return currentEvent;
@@ -44,7 +41,7 @@ namespace App.Infra.Repositories
         public async Task Delete(Guid id)
         {
             var currentEvent = await GetById(id);
-            _context.Events.Remove(currentEvent);
+            _context.Event.Remove(currentEvent);
             await _context.SaveChangesAsync();
         }
     }
