@@ -1,6 +1,6 @@
 **/.classpath
 **/.dockerignore
-**/docker-compose
+docker-compose.yml
 **/.env
 **/.git
 **/.gitignore
