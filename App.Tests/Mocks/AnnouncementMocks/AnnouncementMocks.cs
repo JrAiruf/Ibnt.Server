@@ -22,5 +22,15 @@ namespace App.Tests.Mocks.AnnouncementMocks
                "DESCRIPTION",
                announcementDate
                );
+
+        public static List<AnnouncementEntity> list = new()
+            {
+            announcement,
+            announcement,
+            announcement,
+            announcement,
+            announcement,
+            announcement,
+            };
     }
 }

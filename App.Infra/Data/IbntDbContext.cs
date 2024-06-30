@@ -141,6 +141,11 @@ namespace App.Infra.Data
             modelBuilder.Entity<AnnouncementEntity>(announcement =>
             {
                 announcement.HasKey(a => a.Id);
+                announcement.HasOne(a => a.Member).WithMany(m => m.Announcements);
+            });
+            
+            modelBuilder.Entity<AnnouncementEntity>(announcement =>
+            {
                 announcement.Property(a => a.MemberId).HasConversion(typeof(string));
                 announcement.Property(a => a.Date).HasConversion(typeof(string));
             });

@@ -4,6 +4,8 @@ using App.Application.Interfaces;
 using App.Domain.Entities.Announcement;
 using App.Domain.Exceptions;
 using App.Infra.Data;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace App.Infra.Repositories
 {
@@ -33,13 +35,30 @@ namespace App.Infra.Repositories
             }
         }
 
-        public Task<AnnouncementEntity> GetByIdAsync(Guid id)
+        public async Task<Tuple<AppException?, AnnouncementEntity?>> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var announcement = await _context.Announcement.FindAsync(id);
+                if (announcement == null)
+                {
+                    return Tuple.Create<AppException?, AnnouncementEntity?>
+                   (new AnnouncementException($"Item não encontrado. ID: {id}"), null);
+                }
+                else
+                {
+                    return Tuple.Create<AppException?, AnnouncementEntity?>(null, announcement);
+                }
+
+            }
+            catch (AppException exception)
+            {
+                return Tuple.Create<AppException?, AnnouncementEntity?>(exception, null);
+            }
         }
-        public Task<List<AnnouncementEntity>> GetAllAsync()
+        public async Task<List<AnnouncementEntity>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Announcement.ToListAsync();
         }
 
         public Task<AnnouncementEntity> Update(Guid id, CreateAnnouncementDto announcement)

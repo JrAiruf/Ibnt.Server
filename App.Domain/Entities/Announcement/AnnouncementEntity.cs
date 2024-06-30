@@ -1,4 +1,5 @@
-﻿using App.Domain.Exceptions;
+﻿using App.Domain.Entities.Users;
+using App.Domain.Exceptions;
 
 namespace App.Domain.Entities.Announcement
 {
@@ -23,7 +24,7 @@ namespace App.Domain.Entities.Announcement
         public string Description { get; private set; }
         public DateTime Date { get; private set; }
         public bool FixedWarning { get; private set; }
-
+        public MemberEntity Member { get; private set; }
         public void ChangeTitle(string title)
         {
             if (string.IsNullOrEmpty(title))
@@ -56,7 +57,6 @@ namespace App.Domain.Entities.Announcement
                 DateTime announcementDate = new DateTime();
                 announcementDate.AddMonths(month);
                 announcementDate.AddDays(day);
-                Console.WriteLine(announcementDate);
                 Date = announcementDate;
             }
         }

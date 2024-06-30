@@ -23,7 +23,7 @@ namespace App.Application.Extensions
                 entity.MemberId,
                 entity.Title,
                 entity.Description,
-                entity.Date.ToString(),
+                entity.Date.ToString("yyyy-mm-dd"),
                 entity.FixedWarning
                 );
         }

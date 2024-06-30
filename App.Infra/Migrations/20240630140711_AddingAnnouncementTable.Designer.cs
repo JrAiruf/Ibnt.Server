@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Infra.Migrations
 {
     [DbContext(typeof(IbntDbContext))]
-    [Migration("20240624221802_AddingAnnouncementTable")]
+    [Migration("20240630140711_AddingAnnouncementTable")]
     partial class AddingAnnouncementTable
     {
         /// <inheritdoc />
@@ -51,6 +51,8 @@ namespace App.Infra.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
 
                     b.ToTable("Announcement");
                 });
@@ -350,6 +352,17 @@ namespace App.Infra.Migrations
                     b.ToTable("Member");
                 });
 
+            modelBuilder.Entity("App.Domain.Entities.Announcement.AnnouncementEntity", b =>
+                {
+                    b.HasOne("App.Domain.Entities.Users.MemberEntity", "Member")
+                        .WithMany("Announcements")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("App.Domain.Entities.Reactions.ReactionBibleMessageEntity", b =>
                 {
                     b.HasOne("App.Domain.Entities.TimeLine.BibleMessageEntity", "BibleMessage")
@@ -461,6 +474,8 @@ namespace App.Infra.Migrations
 
             modelBuilder.Entity("App.Domain.Entities.Users.MemberEntity", b =>
                 {
+                    b.Navigation("Announcements");
+
                     b.Navigation("BibleMessages");
 
                     b.Navigation("Credential");

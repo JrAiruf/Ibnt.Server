@@ -49,6 +49,8 @@ namespace App.Infra.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MemberId");
+
                     b.ToTable("Announcement");
                 });
 
@@ -347,6 +349,17 @@ namespace App.Infra.Migrations
                     b.ToTable("Member");
                 });
 
+            modelBuilder.Entity("App.Domain.Entities.Announcement.AnnouncementEntity", b =>
+                {
+                    b.HasOne("App.Domain.Entities.Users.MemberEntity", "Member")
+                        .WithMany("Announcements")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("App.Domain.Entities.Reactions.ReactionBibleMessageEntity", b =>
                 {
                     b.HasOne("App.Domain.Entities.TimeLine.BibleMessageEntity", "BibleMessage")
@@ -458,6 +471,8 @@ namespace App.Infra.Migrations
 
             modelBuilder.Entity("App.Domain.Entities.Users.MemberEntity", b =>
                 {
+                    b.Navigation("Announcements");
+
                     b.Navigation("BibleMessages");
 
                     b.Navigation("Credential");
