@@ -101,15 +101,38 @@ namespace App.Tests.Controllers
             Assert.IsType<Ok<AnnouncementDto>>(result.Result);
         }
 
-        //[Fact]
-        //public async Task Should_Return_An_Announcement_Entities_By_Its_Id()
-        //{
-        //    _repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(AnnouncementMocks.announcement);
-        //    var result = await _controller.GetAllAsync();
-        //    _repositoryMock.Verify((r) => r.GetAllAsync(), Times.Once());
-        //    Assert.NotNull(result);
-        //    Assert.IsType<Results<BadRequest<string>, Ok<List<AnnouncementDto>>>>(result);
-        //    Assert.IsType<Ok<List<AnnouncementDto>>>(result.Result);
-        //}
+        [Fact]
+        public async Task Should_Return_Bad_Request_Status_Due_To_Fail_Updating()
+        {
+            Guid id = Guid.NewGuid();
+            _repositoryMock.Setup(r => r.UpdateAsync(id, It.IsAny<UpdateAnnouncementDto>()))
+                           .ReturnsAsync(Tuple.Create<AppException?, AnnouncementEntity?>
+                           (
+                               new AnnouncementException("Erro ao Atualizar."), null)
+                           );
+
+            var result = await _controller.UpdateAsync(id, AnnouncementMocks.updateDto);
+            _repositoryMock.Verify((r) => r.UpdateAsync(id, AnnouncementMocks.updateDto), Times.Once());
+            Assert.NotNull(result);
+            Assert.IsType<Results<BadRequest<string>, Ok<AnnouncementDto>>>(result);
+            Assert.IsType<BadRequest<string>>(result.Result);
+        }
+
+        [Fact]
+        public async Task Should_Return_Ok_Status_With_An_Updated_Announcement_Dto()
+        {
+            Guid id = Guid.NewGuid();
+            _repositoryMock.Setup(r => r.UpdateAsync(It.IsAny<Guid>(), It.IsAny<UpdateAnnouncementDto>()))
+                           .ReturnsAsync(Tuple.Create<AppException?, AnnouncementEntity?>
+                           (
+                               null, AnnouncementMocks.announcement)
+                           );
+
+            var result = await _controller.UpdateAsync(id, AnnouncementMocks.updateDto);
+            _repositoryMock.Verify((r) => r.UpdateAsync(id, AnnouncementMocks.updateDto), Times.Once());
+            Assert.NotNull(result);
+            Assert.IsType<Results<BadRequest<string>, Ok<AnnouncementDto>>>(result);
+            Assert.IsType<Ok<AnnouncementDto>>(result.Result);
+        }
     }
 }

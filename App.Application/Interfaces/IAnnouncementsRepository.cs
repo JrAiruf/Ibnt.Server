@@ -9,7 +9,7 @@ namespace App.Application.Interfaces
         public Task<Tuple<AppException?, AnnouncementEntity?>> Create(CreateAnnouncementDto newAnnouncement);
         public Task<List<AnnouncementEntity>> GetAllAsync();
         public Task<Tuple<AppException?, AnnouncementEntity?>> GetByIdAsync(Guid id);
-        public Task<AnnouncementEntity> Update(Guid id, CreateAnnouncementDto announcement);
+        public Task<Tuple<AppException?, AnnouncementEntity?>> UpdateAsync(Guid id, UpdateAnnouncementDto announcement);
         public Task Delete(Guid id);
     }
 }

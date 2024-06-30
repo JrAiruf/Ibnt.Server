@@ -23,8 +23,18 @@ namespace App.Application.Extensions
                 entity.MemberId,
                 entity.Title,
                 entity.Description,
-                entity.Date.ToString("yyyy-mm-dd"),
+                entity.Date.ToString(),
                 entity.FixedWarning
+                );
+        }
+        
+        public static AnnouncementEntity FromDto(this UpdateAnnouncementDto dto)
+        {
+            return new(
+                dto.title,
+                dto.description,
+                dto.dateString,
+                dto.fixedWarning
                 );
         }
     }

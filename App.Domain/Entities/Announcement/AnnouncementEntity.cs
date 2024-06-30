@@ -13,6 +13,13 @@ namespace App.Domain.Entities.Announcement
             ChangeDescription(description);
             ChangeDate(dateString);
         }
+        public AnnouncementEntity(string title, string description, string dateString,bool fixedWarning)
+        {
+            ChangeTitle(title);
+            ChangeDescription(description);
+            ChangeDate(dateString);
+            ChangeFixedStatus(fixedWarning);
+        }
 
         public AnnouncementEntity()
         {
@@ -52,18 +59,14 @@ namespace App.Domain.Entities.Announcement
             }
             else
             {
-                int month = int.Parse(dateString.Split("-")[1]);
-                int day = int.Parse(dateString.Split("-").Last());
-                DateTime announcementDate = new DateTime();
-                announcementDate.AddMonths(month);
-                announcementDate.AddDays(day);
+                DateTime announcementDate = DateTime.Parse(dateString);
                 Date = announcementDate;
             }
         }
 
-        public void ChangeFixedStatus()
+        public void ChangeFixedStatus(bool fixedWarning)
         {
-            FixedWarning = !FixedWarning;
+            FixedWarning = fixedWarning;
         }
 
 

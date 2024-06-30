@@ -61,9 +61,34 @@ namespace App.Infra.Repositories
             return await _context.Announcement.ToListAsync();
         }
 
-        public Task<AnnouncementEntity> Update(Guid id, CreateAnnouncementDto announcement)
+        public async Task<Tuple<AppException?, AnnouncementEntity?>> UpdateAsync(Guid id, UpdateAnnouncementDto dto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var (exception, announcement) = await GetByIdAsync(id);
+                if (announcement == null)
+                {
+                    return Tuple.Create<AppException?, AnnouncementEntity?>
+                   (new AnnouncementException($"Item não encontrado. ID: {id}"), null);
+                }
+                else
+                {
+                    announcement.ChangeTitle(dto.title);
+                    announcement.ChangeDescription(dto.description);
+                    announcement.ChangeDate(dto.dateString);
+                    announcement.ChangeFixedStatus(dto.fixedWarning);
+
+                    _context.Announcement.Update(announcement);
+                    await _context.SaveChangesAsync();
+
+                    return Tuple.Create<AppException?, AnnouncementEntity?>(null, announcement);
+                }
+
+            }
+            catch (AppException exception)
+            {
+                return Tuple.Create<AppException?, AnnouncementEntity?>(exception, null);
+            }
         }
 
         public Task Delete(Guid id)

@@ -22,6 +22,13 @@ namespace App.Tests.Mocks.AnnouncementMocks
                "DESCRIPTION",
                announcementDate
                );
+        
+        public static UpdateAnnouncementDto updateDto = new UpdateAnnouncementDto(
+               "TITLE",
+               "DESCRIPTION",
+               announcementDate,
+               true
+               );
 
         public static List<AnnouncementEntity> list = new()
             {

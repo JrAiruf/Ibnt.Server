@@ -57,5 +57,20 @@ namespace Ibnt.Server.Controllers
                 return TypedResults.Ok(announcement!.AsDto());
             }
         }
+        
+        [HttpPut]
+        public async Task<Results<BadRequest<string>, Ok<AnnouncementDto>>> UpdateAsync(Guid id, UpdateAnnouncementDto dto)
+        {
+            (AppException? exception, AnnouncementEntity? announcement) = await _repository.UpdateAsync(id,dto);
+
+            if (exception != null)
+            {
+                return TypedResults.BadRequest(exception.Message);
+            }
+            else
+            {
+                return TypedResults.Ok(announcement!.AsDto());
+            }
+        }
     }
 }
