@@ -1,0 +1,22 @@
+services:
+  ibnt.server:
+    container_name: ibnt-api
+    build:
+        context: .
+        dockerfile: Ibnt.Server/Dockerfile
+    depends_on:
+        - db
+    restart: on-failure
+    environment:
+        ASPNETCORE_ENVIRONMENT: "Development"
+        PGHOST: "ibnt-db"
+        PGPASSWORD: "12345678"
+        PGUSER: "jradmin"
+        PGPORT: 5432
+        SECRET_KEY: "asld34lqkasldfkj02900asdf"
+        PORT: 8080
+    ports:
+        - "8080:8080"
+        - "8081:8081"
+volumes:
+  app-data:  
