@@ -20,9 +20,12 @@ namespace App.Infra.Config
         public static WebApplicationBuilder Migrate(this WebApplicationBuilder builder)
         {
             IbntDbContext? context = builder.Configuration.Get<IbntDbContext>();
-            if (context!.Database.GetPendingMigrations().Any())
+            if (context != null)
             {
-                context?.Database.Migrate();
+                if (context!.Database.GetPendingMigrations().Any())
+                {
+                    context?.Database.Migrate();
+                }
             }
             return builder;
         }
