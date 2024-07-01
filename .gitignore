@@ -213,7 +213,7 @@ csx/
 # Microsoft Azure Emulator
 ecf/
 rcf/
-
+docker-compose.yml
 # Windows Store app package directories and files
 AppPackages/
 BundleArtifacts/

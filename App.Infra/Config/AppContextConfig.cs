@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.TeamFoundation.Common;
 
 namespace App.Infra.Config
 {
@@ -21,10 +20,7 @@ namespace App.Infra.Config
         public static WebApplicationBuilder Migrate(this WebApplicationBuilder builder)
         {
             IbntDbContext? context = builder.Configuration.Get<IbntDbContext>();
-            if (context != null)
-            {
-                context.Database.Migrate();
-            }
+            context?.Database.Migrate();
             return builder;
         }
     }
