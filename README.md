@@ -7,8 +7,8 @@
 Essa é a API utilizada para persistência dos dados no servidor. Aqui são cadastrados os membros da Igreja que acessam o app, os eventos gerados pelos administradores
 do app, as mensagens bíblicas (geradas automaticamente, ou criadas pelo usuário), e demais dados contidos na aplicação.
 
-Essa API conta com a feature JWT de autenticação, que informa o tipo de usuário no ato de realização do login, retornando o token contendo a role do membro, o id e o e-mail desse usuário.
-O API está em produção no serviço da railway, que oferece ferramentas sensacionais para deploy da aplicação, além de ser excelente em custo benefício.
+Essa API conta com a feature de autenticação JWT, que informa o tipo de usuário no ato de realização do login, retornando o token contendo a role do membro, o id e o e-mail desse usuário.
+A API está em produção no serviço da railway, que oferece ferramentas sensacionais para deploy da aplicação, além de ser excelente em custo benefício.
 
 
 ## Links 
