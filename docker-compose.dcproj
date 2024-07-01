@@ -3,15 +3,12 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>d02db5ef-e9bb-4a7c-a120-629b96b4f00d</ProjectGuid>
+    <ProjectGuid>bd3be831-4bdf-49e3-820c-4f9495b22f06</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>ibnt.server</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="docker-compose - Copy.override.yml">
-      <DependentUpon>docker-compose.yml</DependentUpon>
-    </None>
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>

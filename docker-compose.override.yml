@@ -1,11 +1,13 @@
+version: '3.4'
+
 services:
   ibnt.server:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLShttp://+:8080
+      - ASPNETCORE_URLS=https://+:443;http://+:80
     ports:
-      - "8080"
-      - "8081"
+      - "80"
+      - "443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
