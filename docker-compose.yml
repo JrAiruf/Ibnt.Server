@@ -2,10 +2,6 @@ services:
   db:
     image: postgres:15-alpine
     container_name: ibnt-db
-    environment:
-        POSTGRES_USER: "jradmin"
-        POSTGRES_PASSWORD: "12345678"
-        PGDATABASE: "ibntDb"
     ports:
       - 5432:5432
     volumes:
