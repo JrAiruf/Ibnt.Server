@@ -59,7 +59,11 @@ namespace Ibnt.Server.Controllers
         }
         
         [HttpPut("{id}")]
+<<<<<<< HEAD
         public async Task<Results<BadRequest<string>, Ok<AnnouncementDto>>> UpdateAsync(Guid id, [FromBody]UpdateAnnouncementDto dto)
+=======
+        public async Task<Results<BadRequest<string>, Ok<AnnouncementDto>>> UpdateAsync(Guid id, UpdateAnnouncementDto dto)
+>>>>>>> dd356c3ce1539f7b3cafd52d78135e191869dfa8
         {
             (AppException? exception, AnnouncementEntity? announcement) = await _repository.UpdateAsync(id,dto);
 
