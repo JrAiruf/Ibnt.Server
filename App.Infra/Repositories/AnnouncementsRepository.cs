@@ -58,7 +58,10 @@ namespace App.Infra.Repositories
         }
         public async Task<List<AnnouncementEntity>> GetAllAsync()
         {
-            return await _context.Announcement.ToListAsync();
+            var announcements = await _context.Announcement
+                .OrderBy(a => a.Date)
+                .ToListAsync();
+            return announcements;
         }
 
         public async Task<Tuple<AppException?, AnnouncementEntity?>> UpdateAsync(Guid id, UpdateAnnouncementDto dto)
