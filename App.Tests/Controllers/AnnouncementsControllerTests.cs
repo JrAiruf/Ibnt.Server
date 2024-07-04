@@ -4,9 +4,7 @@ using App.Domain.Entities.Announcement;
 using App.Domain.Exceptions;
 using App.Tests.Mocks.AnnouncementMocks;
 using Ibnt.Server.Controllers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace App.Tests.Controllers
@@ -51,6 +49,23 @@ namespace App.Tests.Controllers
             Assert.NotNull(result);
             Assert.IsType<Results<BadRequest<string>, Created<AnnouncementDto>>>(result);
             Assert.IsType<Created<AnnouncementDto>>(result.Result);
+
+        }
+        
+        [Fact]
+        public async Task Should_Return_A_Status_Code_201_And_A_List_Of_Announcement_Dto_Object()
+        {
+            _repositoryMock.Setup(r => r.CreateManyAsync(It.IsAny<List<CreateAnnouncementDto>>()))
+                           .ReturnsAsync(Tuple.Create<AppException?, List<AnnouncementEntity>?>
+                           (
+                               null, AnnouncementMocks.list)
+                           );
+
+            var result = await _controller.CreateManyAsync(AnnouncementMocks.creationList);
+            _repositoryMock.Verify((r) => r.CreateManyAsync(AnnouncementMocks.creationList), Times.Once());
+            Assert.NotNull(result);
+            Assert.IsType<Results<BadRequest<string>, Created<List<AnnouncementDto>>>>(result);
+            Assert.IsType<Created<List<AnnouncementDto>>>(result.Result);
 
         }
 

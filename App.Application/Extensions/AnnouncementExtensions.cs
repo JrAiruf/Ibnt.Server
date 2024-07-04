@@ -12,7 +12,8 @@ namespace App.Application.Extensions
                 dto.memberId,
                 dto.title,
                 dto.description,
-                dto.dateString
+                dto.dateString,
+                dto.fixedWarning
                 );
         }
 
@@ -27,7 +28,7 @@ namespace App.Application.Extensions
                 entity.FixedWarning
                 );
         }
-        
+
         public static AnnouncementEntity FromDto(this UpdateAnnouncementDto dto)
         {
             return new(
