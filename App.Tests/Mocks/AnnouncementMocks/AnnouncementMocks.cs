@@ -13,14 +13,16 @@ namespace App.Tests.Mocks.AnnouncementMocks
             Guid.NewGuid(),
             "TITLE",
             "DESCRIPTION",
-            announcementDate
+            announcementDate,
+            false
             );
 
         public static CreateAnnouncementDto announcementDto = new CreateAnnouncementDto(
                Guid.NewGuid(),
                "TITLE",
                "DESCRIPTION",
-               announcementDate
+               announcementDate,
+               false
                );
         
         public static UpdateAnnouncementDto updateDto = new UpdateAnnouncementDto(
@@ -38,6 +40,13 @@ namespace App.Tests.Mocks.AnnouncementMocks
             announcement,
             announcement,
             announcement,
+            };
+        
+        public static List<CreateAnnouncementDto> creationList = new()
+            {
+            announcementDto,
+            announcementDto,
+            announcementDto,
             };
     }
 }

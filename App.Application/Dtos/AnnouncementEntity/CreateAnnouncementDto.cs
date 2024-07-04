@@ -1,4 +1,4 @@
 ﻿namespace App.Application.Dtos.AnnouncementEntity
 {
-    public record CreateAnnouncementDto(Guid memberId, string title, string description, string dateString);
+    public record CreateAnnouncementDto(Guid memberId, string title, string description, string dateString, bool? fixedWarning);
 }

@@ -5,13 +5,14 @@ namespace App.Domain.Entities.Announcement
 {
     public class AnnouncementEntity
     {
-        public AnnouncementEntity(Guid memberId, string title, string description, string dateString)
+        public AnnouncementEntity(Guid memberId, string title, string description, string dateString,bool? fixedWarning)
         {
             Id = Guid.NewGuid();
             MemberId = memberId;
             ChangeTitle(title);
             ChangeDescription(description);
             ChangeDate(dateString);
+            ChangeFixedStatus(fixedWarning ?? false);
         }
         public AnnouncementEntity(string title, string description, string dateString,bool fixedWarning)
         {

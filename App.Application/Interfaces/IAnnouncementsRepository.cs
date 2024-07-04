@@ -7,6 +7,7 @@ namespace App.Application.Interfaces
     public interface IAnnouncementsRepository
     {
         public Task<Tuple<AppException?, AnnouncementEntity?>> Create(CreateAnnouncementDto newAnnouncement);
+        public Task<Tuple<AppException?, List<AnnouncementEntity>?>> CreateManyAsync(List<CreateAnnouncementDto> newAnnouncements);
         public Task<List<AnnouncementEntity>> GetAllAsync();
         public Task<Tuple<AppException?, AnnouncementEntity?>> GetByIdAsync(Guid id);
         public Task<Tuple<AppException?, AnnouncementEntity?>> UpdateAsync(Guid id, UpdateAnnouncementDto announcement);

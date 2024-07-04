@@ -6,6 +6,7 @@ using App.Domain.Exceptions;
 using App.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Runtime.ConstrainedExecution;
 
 namespace App.Infra.Repositories
 {
@@ -33,6 +34,23 @@ namespace App.Infra.Repositories
             {
                 return Tuple.Create<AppException?, AnnouncementEntity?>(exception, null);
             }
+        }
+
+        public async Task<Tuple<AppException?, List<AnnouncementEntity>?>> CreateManyAsync(List<CreateAnnouncementDto> newAnnouncements)
+        {
+            try
+            {
+                var announcementsList = newAnnouncements.Select(a => a.FromDto()).ToList();
+                await _context.Announcement.AddRangeAsync(announcementsList);
+                await _context.SaveChangesAsync();
+                var updatedList = await _context.Announcement.ToListAsync();
+                return Tuple.Create<AppException?, List<AnnouncementEntity>?>(null, updatedList);
+            }
+            catch (AppException exception)
+            {
+                return Tuple.Create<AppException?, List<AnnouncementEntity>?>(exception, null);
+            }
+
         }
 
         public async Task<Tuple<AppException?, AnnouncementEntity?>> GetByIdAsync(Guid id)
@@ -115,6 +133,5 @@ namespace App.Infra.Repositories
                 return Tuple.Create<AppException?, Guid?>(exception, null);
             }
         }
-
     }
 }

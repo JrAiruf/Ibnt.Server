@@ -35,6 +35,22 @@ namespace Ibnt.Server.Controllers
             }
         }
 
+        [HttpPost("list")]
+        public async Task<Results<BadRequest<string>, Created<List<AnnouncementDto>>>> CreateManyAsync([FromBody] List<CreateAnnouncementDto> dtosList)
+        {
+            (AppException? exception, List<AnnouncementEntity>? announcements) = await _repository.CreateManyAsync(dtosList);
+
+            if (exception != null)
+            {
+                return TypedResults.BadRequest(exception.Message);
+            }
+            else
+            {
+                var updatedList = announcements?.Select(a => a.AsDto()).ToList();
+                return TypedResults.Created("/api/controller", updatedList);
+            }
+        }
+
         [HttpGet]
         public async Task<Results<BadRequest<string>, Ok<List<AnnouncementDto>>>> GetAllAsync()
         {
@@ -42,7 +58,7 @@ namespace Ibnt.Server.Controllers
             var announcements = list.Select(a => a.AsDto()).ToList();
             return TypedResults.Ok(announcements);
         }
-        
+
         [HttpGet("{id}")]
         public async Task<Results<NotFound<string>, Ok<AnnouncementDto>>> GetByIdAsync(Guid id)
         {
@@ -57,11 +73,11 @@ namespace Ibnt.Server.Controllers
                 return TypedResults.Ok(announcement!.AsDto());
             }
         }
-        
+
         [HttpPut("{id}")]
-        public async Task<Results<BadRequest<string>, Ok<AnnouncementDto>>> UpdateAsync(Guid id, [FromBody]UpdateAnnouncementDto dto)
+        public async Task<Results<BadRequest<string>, Ok<AnnouncementDto>>> UpdateAsync(Guid id, [FromBody] UpdateAnnouncementDto dto)
         {
-            (AppException? exception, AnnouncementEntity? announcement) = await _repository.UpdateAsync(id,dto);
+            (AppException? exception, AnnouncementEntity? announcement) = await _repository.UpdateAsync(id, dto);
 
             if (exception != null)
             {
@@ -72,7 +88,7 @@ namespace Ibnt.Server.Controllers
                 return TypedResults.Ok(announcement!.AsDto());
             }
         }
-        
+
         [HttpDelete("{id}")]
         public async Task<Results<NotFound<string>, Ok<Guid>>> DeleteAsync(Guid id)
         {
