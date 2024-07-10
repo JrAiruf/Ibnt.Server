@@ -43,7 +43,9 @@ namespace App.Infra.Repositories
                 var announcementsList = newAnnouncements.Select(a => a.FromDto()).ToList();
                 await _context.Announcement.AddRangeAsync(announcementsList);
                 await _context.SaveChangesAsync();
-                var updatedList = await _context.Announcement.ToListAsync();
+                var updatedList = await _context.Announcement
+                    .OrderBy(a => a.Date)
+                    .ToListAsync();
                 return Tuple.Create<AppException?, List<AnnouncementEntity>?>(null, updatedList);
             }
             catch (AppException exception)
