@@ -6,6 +6,14 @@ namespace App.Domain.Entities.TimeLine
 {
     public class EventEntity : TimeLineContent
     {
+        public EventEntity(string title, DateTime? postDate, DateTime? date, string description)
+        {
+            ChangeTitle(title);
+            ChangePostDate(postDate);
+            ChangeDate(date);
+            ChangeDescription(description);
+        }
+        
         public EventEntity(string title, DateTime? postDate, DateTime? date, string description, string imageUrl)
         {
             ChangeTitle(title);
