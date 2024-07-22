@@ -1,4 +1,5 @@
 using App.Infra.Config;
+using Microsoft.Extensions.FileProviders;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,12 @@ app.UseCors(
            .AllowAnyMethod()
            .AllowAnyOrigin();
     });
+
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
+    RequestPath = new PathString("/Resources")
+}); ;
 
 app.UseAuthentication();
 
