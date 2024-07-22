@@ -19,13 +19,12 @@ namespace Ibnt.API.Controllers
             _repository = repository;
         }
 
-        [HttpPost]
+        [HttpPost("images/{id}")]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Create([FromBody] CreateEventDto dto)
+        public async Task<IActionResult> Create([FromForm] IFormFile imageFile, Guid id)
         {
             try
             {
-                var imageFile = Request.Form.Files.First();
                 string fileName = "";
                 FileStream file = new FileStream(imageFile.FileName, FileMode.Create);
                 await imageFile.CopyToAsync(file);
@@ -37,12 +36,42 @@ namespace Ibnt.API.Controllers
                     Console.WriteLine(fileName);
                 });
 
+                var data = await _repository.GetById(id);
+
+                data.ChangeImageUrl(fileName);
+                var updatedData = await _repository.Update(id,data);
+
+                return StatusCode(StatusCodes.Status201Created, updatedData.AsDto());
+            }
+            catch (AppException exception)
+            {
+                if (exception is EventException)
+                {
+                    return BadRequest(exception.Message);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+                }
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Create([FromBody] CreateEventDto dto)
+        {
+            try
+            {
                 EventEntity newEvent = new(
                 dto.Title,
                 dto.PostDate,
                 dto.Date,
-                dto.Description,
-                fileName);
+                dto.Description
+                );
 
                 var createdEvent = await _repository.Create(newEvent);
                 return StatusCode(StatusCodes.Status201Created, createdEvent.AsDto());
