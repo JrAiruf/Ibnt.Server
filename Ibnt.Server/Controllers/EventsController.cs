@@ -5,6 +5,7 @@ using App.Domain.Entities.TimeLine;
 using App.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RestSharp.Extensions;
 
 namespace Ibnt.API.Controllers
 {
@@ -24,12 +25,24 @@ namespace Ibnt.API.Controllers
         {
             try
             {
+                var imageFile = Request.Form.Files.First();
+                string fileName = "";
+                FileStream file = new FileStream(imageFile.FileName, FileMode.Create);
+                await imageFile.CopyToAsync(file);
+
+                List<string> transformedBytes = file.ReadAsBytes().Select(b => b.ToString()).ToList();
+                transformedBytes.ForEach((caracter) =>
+                {
+                    fileName = $"{caracter},";
+                    Console.WriteLine(fileName);
+                });
+
                 EventEntity newEvent = new(
-               dto.Title,
-               dto.PostDate,
-               dto.Date,
-               dto.Description,
-               dto.ImageUrl ?? "img");
+                dto.Title,
+                dto.PostDate,
+                dto.Date,
+                dto.Description,
+                fileName);
 
                 var createdEvent = await _repository.Create(newEvent);
                 return StatusCode(StatusCodes.Status201Created, createdEvent.AsDto());
