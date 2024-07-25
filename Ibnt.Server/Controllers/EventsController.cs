@@ -43,7 +43,11 @@ namespace Ibnt.Server.Controllers
 
                     await imageFile.CopyToAsync(file);
 
-                    return StatusCode(StatusCodes.Status200OK, new {Message = $"New Image Added: {newImagePath}."});
+                    currentEvent.ChangeImageUrl(newImagePath);
+
+                    await _repository.Update(id, currentEvent);
+
+                    return StatusCode(StatusCodes.Status200OK, currentEvent.AsDto());
                 }
             }
             catch (AppException exception)

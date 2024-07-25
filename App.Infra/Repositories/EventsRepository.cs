@@ -33,9 +33,19 @@ namespace App.Infra.Repositories
             return currentEvent;
         }
 
-        public Task<EventEntity> Update(Guid id, EventEntity eventToUpdate)
+        public async Task<EventEntity> Update(Guid id, EventEntity eventToUpdate)
         {
-            throw new NotImplementedException();
+            var currentEvent = await GetById(id);
+            if(currentEvent != null)
+            {
+                _context.Event.Update(currentEvent);
+                await _context.SaveChangesAsync();
+
+                return currentEvent;
+            } else
+            {
+                return null!;
+            }
         }
 
         public async Task Delete(Guid id)
