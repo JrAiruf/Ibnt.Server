@@ -20,6 +20,12 @@ if (app.Environment.IsDevelopment())
     _ = app.UseSwaggerUI();
 }
 
+var imageDirectoryCreated = Directory.Exists("./Images");
+if (!imageDirectoryCreated)
+{
+    Directory.CreateDirectory("./Images");
+}
+
 app.UseCors(
     opt =>
     {
@@ -29,6 +35,12 @@ app.UseCors(
     });
 
 app.UseAuthentication();
+
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
+    RequestPath = new PathString("/Images")
+}) ; 
 
 app.UseRouting();
 

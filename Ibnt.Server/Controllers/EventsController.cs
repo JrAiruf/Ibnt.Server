@@ -5,9 +5,9 @@ using App.Domain.Entities.TimeLine;
 using App.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RestSharp.Extensions;
+using System.Xml;
 
-namespace Ibnt.API.Controllers
+namespace Ibnt.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -25,35 +25,32 @@ namespace Ibnt.API.Controllers
         {
             try
             {
-                string fileName = "";
-                FileStream file = new FileStream(imageFile.FileName, FileMode.Create);
-                await imageFile.CopyToAsync(file);
-
-                List<string> transformedBytes = file.ReadAsBytes().Select(b => b.ToString()).ToList();
-                transformedBytes.ForEach((caracter) =>
+                EventEntity currentEvent = await _repository.GetById(id);
+                if (currentEvent == null)
                 {
-                    fileName = $"{caracter},";
-                    Console.WriteLine(fileName);
-                });
+                    return NotFound();
+                }
 
-                file.Close();
-                var data = await _repository.GetById(id);
+                else
+                {
+                    string pathSection = $"{id}" + imageFile.FileName;
 
-                data.ChangeImageUrl(fileName);
-                var updatedData = await _repository.Update(id,data);
+                    string imagePath = $"Images/{pathSection}";
 
-                return StatusCode(StatusCodes.Status200OK, updatedData.AsDto());
+                    string newImagePath = Path.Combine(imagePath);
+
+                    using FileStream file = new FileStream(newImagePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+
+                    await imageFile.CopyToAsync(file);
+
+                    return StatusCode(StatusCodes.Status200OK, new {Message = $"New Image Added: {newImagePath}."});
+                }
             }
             catch (AppException exception)
             {
-                if (exception is EventException)
-                {
-                    return BadRequest(exception.Message);
-                }
-                else
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
-                }
+                return exception is EventException
+                    ? BadRequest(exception.Message)
+                    : (IActionResult)StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
             }
             catch (Exception exception)
             {
@@ -74,19 +71,14 @@ namespace Ibnt.API.Controllers
                 dto.Description
                 );
 
-                var createdEvent = await _repository.Create(newEvent);
+                EventEntity createdEvent = await _repository.Create(newEvent);
                 return StatusCode(StatusCodes.Status201Created, createdEvent.AsDto());
             }
             catch (AppException exception)
             {
-                if (exception is EventException)
-                {
-                    return BadRequest(exception.Message);
-                }
-                else
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
-                }
+                return exception is EventException
+                    ? BadRequest(exception.Message)
+                    : (IActionResult)StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
             }
             catch (Exception exception)
             {
@@ -100,8 +92,8 @@ namespace Ibnt.API.Controllers
         {
             try
             {
-                var databaseEvents = await _repository.GetAll();
-                var eventsList = databaseEvents.Select(dbEvent => dbEvent.AsListDto()).ToList();
+                IEnumerable<EventEntity> databaseEvents = await _repository.GetAll();
+                List<EventListDto> eventsList = databaseEvents.Select(dbEvent => dbEvent.AsListDto()).ToList();
                 return Ok(eventsList);
             }
             catch (Exception exception)
@@ -116,15 +108,8 @@ namespace Ibnt.API.Controllers
         {
             try
             {
-                var currentEvent = await _repository.GetById(id);
-                if (currentEvent != null)
-                {
-                    return Ok(currentEvent.AsDto());
-                }
-                else
-                {
-                    return NotFound();
-                }
+                EventEntity currentEvent = await _repository.GetById(id);
+                return currentEvent != null ? Ok(currentEvent.AsDto()) : NotFound();
             }
             catch (Exception exception)
             {
