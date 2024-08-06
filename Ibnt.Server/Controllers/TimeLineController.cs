@@ -47,6 +47,21 @@ namespace Ibnt.Server.Controllers
             }
         }
 
+        [HttpPost("event/{eventId}")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> RemoveEventAsync(Guid eventId)
+        {
+            try
+            {
+                await _repository.RemoveEvent(eventId);
+                return Ok("Event Removed.");
+            }
+            catch (AppException exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
         [HttpPost("message/{messageId}")]
         [Authorize]
         public async Task<IActionResult> PostBibleMessageAsync(Guid messageId)

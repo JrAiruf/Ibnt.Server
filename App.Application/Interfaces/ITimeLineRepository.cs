@@ -7,6 +7,7 @@ namespace App.Application.Interfaces
         public Task<TimeLineEntity> StartTimeLine();
         public Task<TimeLineEntity> GetTimeLineAsync();
         public Task PostEvent(Guid eventId);
+        public Task RemoveEvent(Guid eventId);
         public Task PostBibleMessage(Guid messageId);
     }
 }

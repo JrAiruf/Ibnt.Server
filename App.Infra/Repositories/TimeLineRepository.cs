@@ -43,7 +43,7 @@ namespace App.Infra.Repositories
 
                 if (alreadyInTimeine)
                 {
-                    throw new TimeLineContentException("Event Already Posted.");
+                    throw new TimeLineContentException($"Event {eventId} Already Posted.");
                 }
                 currentEvent.PostDate = DateTime.UtcNow;
                 timeline?.Events?.Add(currentEvent);
@@ -52,7 +52,33 @@ namespace App.Infra.Repositories
             }
             else
             {
-                throw new TimeLineContentException("Event Not Saved.");
+                throw new TimeLineContentException($"Event {eventId} Not Found.");
+            }
+        }
+
+        public async Task RemoveEvent(Guid eventId)
+        {
+            TimeLineEntity? timeline = await GetTimeLineAsync();
+            EventEntity? currentEvent = await _context.Event.FindAsync(eventId);
+            if (currentEvent != null)
+            {
+                bool presentInTimeine = timeline.Events
+                    .Where(m => m.Id == currentEvent.Id)
+                    .ToList()
+                    .Any();
+
+                if (!presentInTimeine)
+                {
+                    throw new TimeLineContentException($"Event {eventId} removed.");
+                }
+                currentEvent.PostDate = DateTime.UtcNow;
+                timeline?.Events?.Remove(currentEvent);
+                _ = _context.TimeLine.Update(timeline);
+                _ = await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new TimeLineContentException($"Event {eventId} Not Found.");
             }
         }
 
@@ -63,7 +89,7 @@ namespace App.Infra.Repositories
             if (currentBibleMessage != null)
             {
                 bool alreadyInTimeine = timeline.BibleMessages
-                    .Where(m => m.Id==currentBibleMessage.Id)
+                    .Where(m => m.Id == currentBibleMessage.Id)
                     .ToList()
                     .Any();
 
@@ -81,6 +107,5 @@ namespace App.Infra.Repositories
                 throw new TimeLineContentException("Bible Message Not Saved.");
             }
         }
-
     }
 }
