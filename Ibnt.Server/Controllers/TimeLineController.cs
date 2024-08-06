@@ -47,7 +47,7 @@ namespace Ibnt.Server.Controllers
             }
         }
 
-        [HttpPost("event/{eventId}")]
+        [HttpPost("event/remove/{eventId}")]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> RemoveEventAsync(Guid eventId)
         {
