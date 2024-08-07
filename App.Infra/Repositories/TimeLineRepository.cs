@@ -3,7 +3,9 @@ using App.Domain.Entities.TimeLine;
 using App.Domain.Exceptions;
 using App.Infra.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Services.Common;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 
 namespace App.Infra.Repositories
 {
@@ -23,11 +25,20 @@ namespace App.Infra.Repositories
         }
         public async Task<TimeLineEntity> GetTimeLineAsync()
         {
-            TimeLineEntity? timeline = await _context.TimeLine
-                .Include(t => t.Events.OrderByDescending(e => e.PostDate))
-                .Include(t => t.BibleMessages.OrderByDescending(m => m.PostDate))
-                .FirstOrDefaultAsync();
-            return timeline == null ? throw new TimeLineContentException("No data found.") : timeline;
+            TimeLineEntity? timeline = await _context.TimeLine.FirstOrDefaultAsync();
+            if (timeline == null)
+            {
+                throw new TimeLineContentException("No data found.");
+            }
+
+            List<EventEntity> timelineEvents = await _context.Event.Where(e => e.TimeLineId == timeline!.Id).ToListAsync();
+            List<BibleMessageEntity> bibleMessages = await _context.BibleMessage
+                                                                   .Include(b => b.Member)
+                                                                   .Where(b => b.TimeLineId == timeline!.Id).ToListAsync();
+            timeline.BibleMessages = bibleMessages;
+            timeline.Events = timelineEvents;
+
+            return timeline;
         }
 
         public async Task PostEvent(Guid eventId)

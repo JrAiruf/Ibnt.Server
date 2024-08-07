@@ -35,7 +35,7 @@ namespace App.Application.Extensions
                 CreationDate = entity.CreationDate,
                 PostDate = entity.PostDate,
                 EntityType = entity.EntityType,
-                MemberId = entity.MemberId
+                Member = entity.Member.AsDtoList(),
             };
         }
     }
