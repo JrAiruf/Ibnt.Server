@@ -41,6 +41,7 @@ namespace App.Infra.Repositories
         {
             var memberMessages = await _context.BibleMessage
                 .Where(m => m.MemberId == memberId)
+                .OrderByDescending(m => m.CreationDate)
                 .ToListAsync();
             if (memberMessages == null || !memberMessages.Any())
             {
