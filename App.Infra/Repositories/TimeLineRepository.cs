@@ -3,9 +3,6 @@ using App.Domain.Entities.TimeLine;
 using App.Domain.Exceptions;
 using App.Infra.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Services.Common;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
 
 namespace App.Infra.Repositories
 {
@@ -31,10 +28,14 @@ namespace App.Infra.Repositories
                 throw new TimeLineContentException("No data found.");
             }
 
-            List<EventEntity> timelineEvents = await _context.Event.Where(e => e.TimeLineId == timeline!.Id).ToListAsync();
+            List<EventEntity> timelineEvents = await _context.Event.Where(e => e.TimeLineId == timeline!.Id)
+                                                                   .OrderBy(e => e.PostDate)
+                                                                   .ToListAsync();
             List<BibleMessageEntity> bibleMessages = await _context.BibleMessage
                                                                    .Include(b => b.Member)
-                                                                   .Where(b => b.TimeLineId == timeline!.Id).ToListAsync();
+                                                                   .Where(b => b.TimeLineId == timeline!.Id)
+                                                                   .OrderBy(e => e.PostDate)
+                                                                   .ToListAsync();
             timeline.BibleMessages = bibleMessages;
             timeline.Events = timelineEvents;
 
@@ -83,7 +84,7 @@ namespace App.Infra.Repositories
                     throw new TimeLineContentException($"Event {eventId} removed.");
                 }
                 currentEvent.PostDate = DateTime.UtcNow;
-                timeline?.Events?.Remove(currentEvent);
+                _ = (timeline?.Events?.Remove(currentEvent));
                 _ = _context.TimeLine.Update(timeline);
                 _ = await _context.SaveChangesAsync();
             }
@@ -96,7 +97,7 @@ namespace App.Infra.Repositories
         public async Task PostBibleMessage(Guid messageId)
         {
             TimeLineEntity? timeline = await GetTimeLineAsync();
-            var currentBibleMessage = await _context.BibleMessage.FindAsync(messageId);
+            BibleMessageEntity? currentBibleMessage = await _context.BibleMessage.FindAsync(messageId);
             if (currentBibleMessage != null)
             {
                 bool alreadyInTimeine = timeline.BibleMessages
