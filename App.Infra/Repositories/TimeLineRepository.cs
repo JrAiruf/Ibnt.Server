@@ -55,7 +55,7 @@ namespace App.Infra.Repositories
 
                 if (alreadyInTimeine)
                 {
-                    throw new TimeLineContentException($"Event {eventId} Already Posted.");
+                    throw new TimeLineContentException($"O evento {eventId} já foi adicionado.");
                 }
                 currentEvent.PostDate = DateTime.UtcNow;
                 timeline?.Events?.Add(currentEvent);
@@ -81,7 +81,7 @@ namespace App.Infra.Repositories
 
                 if (!presentInTimeine)
                 {
-                    throw new TimeLineContentException($"Event {eventId} removed.");
+                    throw new TimeLineContentException($"O evento não está presente na timeline.");
                 }
                 currentEvent.PostDate = DateTime.UtcNow;
                 _ = (timeline?.Events?.Remove(currentEvent));
