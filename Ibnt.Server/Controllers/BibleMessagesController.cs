@@ -63,7 +63,7 @@ namespace Ibnt.Server.Controllers
             try
             {
                 var databaseBibleMessages = await _repository.GetMessagesByMemberIdAsync(memberId);
-                var bibleMessages = databaseBibleMessages.Select(b => b.AsListDto()).ToList();
+                var bibleMessages = databaseBibleMessages.Select(b => b.AsDto()).ToList();
                 return Ok(bibleMessages);
             }
             catch (AppException exception)
