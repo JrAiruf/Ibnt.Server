@@ -29,12 +29,12 @@ namespace App.Infra.Repositories
             }
 
             List<EventEntity> timelineEvents = await _context.Event.Where(e => e.TimeLineId == timeline!.Id)
-                                                                   .OrderBy(e => e.PostDate)
+                                                                   .OrderByDescending(e => e.PostDate)
                                                                    .ToListAsync();
             List<BibleMessageEntity> bibleMessages = await _context.BibleMessage
                                                                    .Include(b => b.Member)
                                                                    .Where(b => b.TimeLineId == timeline!.Id)
-                                                                   .OrderBy(e => e.PostDate)
+                                                                   .OrderByDescending(e => e.PostDate)
                                                                    .ToListAsync();
             timeline.BibleMessages = bibleMessages;
             timeline.Events = timelineEvents;
