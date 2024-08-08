@@ -1,6 +1,7 @@
 ﻿using App.Application.Dtos.MemberEntity;
 using App.Application.Extensions;
 using App.Application.Interfaces;
+using App.Domain.Entities.TimeLine;
 using App.Domain.Entities.Users;
 using App.Domain.Entities.Users.Auth;
 using App.Domain.Exceptions;
@@ -24,7 +25,48 @@ namespace Ibnt.API.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("images/{id}")]
+        public async Task<IActionResult> SetImageFile([FromForm] IFormFile imageFile, Guid id)
+        {
+            try
+            {
+                MemberEntity currentMember = await _repository.GetById(id);
+                if (currentMember == null)
+                {
+                    return NotFound();
+                }
+
+                else
+                {
+                    string pathSection = $"{id}" + imageFile.FileName;
+
+                    string imagePath = $"Images/Users/{pathSection}";
+
+                    string newImagePath = Path.Combine(imagePath);
+
+                    using FileStream file = new(newImagePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+
+                    await imageFile.CopyToAsync(file);
+
+                    currentMember.ChangeProfileImage(newImagePath);
+
+                    _ = await _repository.UpdateAsync(id, currentMember);
+
+                    return StatusCode(StatusCodes.Status200OK, currentMember.AsDtoList());
+                }
+            }
+            catch (AppException exception)
+            {
+                return exception is EventException
+                    ? BadRequest(exception.Message)
+                    : (IActionResult)StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+
         public async Task<IActionResult> Create([FromBody] CreateMemberDto dto)
         {
             try

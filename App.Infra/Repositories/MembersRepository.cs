@@ -3,6 +3,8 @@ using App.Application.Interfaces;
 using App.Domain.Exceptions;
 using App.Infra.Data;
 using Microsoft.EntityFrameworkCore;
+using App.Application.Dtos.MemberEntity;
+using Microsoft.TeamFoundation.Work.WebApi;
 
 namespace App.Infra.Repositories
 {
@@ -52,6 +54,18 @@ namespace App.Infra.Repositories
             {
                 return null!;
             }
+        }
+
+        public async Task<MemberEntity> UpdateAsync(Guid id, MemberEntity member)
+        {
+            MemberEntity currentMember = await _context.Member.FindAsync(id);
+            currentMember?.ChangeFullName(member.FullName);
+            currentMember?.ChangeProfileImage(member.ProfileImage);
+
+            _context.Update(currentMember);
+            await _context.SaveChangesAsync();
+
+            return currentMember;
         }
     }
 }

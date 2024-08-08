@@ -24,5 +24,14 @@ namespace App.Application.Extensions
                 ProfileImage = member.ProfileImage,
             };
         }
+
+        public static MemberEntity FromDto(this UpdateMemberDto dto)
+        {
+            return new MemberEntity(
+                dto.fullName,
+                dto.profileImage,
+                null
+                );
+        }
     }
 }

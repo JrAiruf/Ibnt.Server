@@ -20,10 +20,16 @@ if (app.Environment.IsDevelopment())
     _ = app.UseSwaggerUI();
 }
 
-var imageDirectoryCreated = Directory.Exists("./Images");
+var imageDirectoryCreated = Directory.Exists("./Images/Events");
+var userDirectoryCreated = Directory.Exists("./Images/Users");
 if (!imageDirectoryCreated)
 {
-    Directory.CreateDirectory("./Images");
+    Directory.CreateDirectory("./Images/Events");
+}
+
+if (!userDirectoryCreated)
+{
+    Directory.CreateDirectory("./Images/Users");
 }
 
 app.UseCors(
@@ -40,7 +46,7 @@ app.UseStaticFiles(new StaticFileOptions()
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
     RequestPath = new PathString("/Images")
-}) ; 
+});
 
 app.UseRouting();
 

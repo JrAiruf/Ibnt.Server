@@ -5,7 +5,6 @@ using App.Domain.Entities.TimeLine;
 using App.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Xml;
 
 namespace Ibnt.Server.Controllers
 {
@@ -35,17 +34,17 @@ namespace Ibnt.Server.Controllers
                 {
                     string pathSection = $"{id}" + imageFile.FileName;
 
-                    string imagePath = $"Images/{pathSection}";
+                    string imagePath = $"Images/Events/{pathSection}";
 
                     string newImagePath = Path.Combine(imagePath);
 
-                    using FileStream file = new FileStream(newImagePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                    using FileStream file = new(newImagePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
                     await imageFile.CopyToAsync(file);
 
                     currentEvent.ChangeImageUrl(newImagePath);
 
-                    await _repository.Update(id, currentEvent);
+                    _ = await _repository.Update(id, currentEvent);
 
                     return StatusCode(StatusCodes.Status200OK, currentEvent.AsDto());
                 }
