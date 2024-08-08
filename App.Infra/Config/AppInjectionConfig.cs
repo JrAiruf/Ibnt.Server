@@ -15,6 +15,7 @@ namespace App.Infra.Config
             builder.Services.AddDbContext<IbntDbContext>();
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
             builder.Services.AddScoped<IMembersRepository, MembersRepository>();
+            builder.Services.AddScoped<IDepartmentsRepository, DepartmentsRepository>();
             builder.Services.AddScoped<ITimeLineRepository, TimeLineRepository>();
             builder.Services.AddScoped<IEventsRepository, EventsRepository>();
             builder.Services.AddScoped<IBibleMessagesRepository, BibleMessagesRepository>();

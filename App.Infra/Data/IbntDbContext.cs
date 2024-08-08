@@ -1,5 +1,6 @@
 ﻿
 using App.Domain.Entities.Announcement;
+using App.Domain.Entities.Department;
 using App.Domain.Entities.Reactions;
 using App.Domain.Entities.TimeLine;
 using App.Domain.Entities.Users;
@@ -23,6 +24,8 @@ namespace App.Infra.Data
         public DbSet<MemberEntity> Member { get; set; }
         public DbSet<AuthCredentialEntity> Credential { get; set; }
         public DbSet<RecoveryPasswordEntity> RecoveryPassword { get; set; }
+        //DEPARTMENTS
+        public DbSet<DepartmentEntity> Department { get; set; }
 
         //TIMELINE
         public DbSet<TimeLineEntity> TimeLine { get; set; }
@@ -46,7 +49,8 @@ namespace App.Infra.Data
                 member.HasOne(m => m.Credential)
                       .WithOne(auth => auth.Member);
                 member.Property(m => m.Id).HasConversion(typeof(string));
-
+                member.HasMany(m => m.Departments)
+                      .WithMany(d => d.Members);
             });
 
             modelBuilder.Entity<RecoveryPasswordEntity>(rP =>
@@ -60,7 +64,13 @@ namespace App.Infra.Data
                 auth.Property(c => c.MemberId).HasConversion(typeof(string));
             });
 
-            //TIMELINE
+            //DEPARTMENTS
+            modelBuilder.Entity<DepartmentEntity>(department =>
+            {
+                department.HasKey(d => d.Id);
+                department.HasMany(d => d.Members)
+                          .WithMany(m => m.Departments);
+            });
 
             //TIMELINE ENTITY
             modelBuilder.Entity<TimeLineEntity>(timeline =>

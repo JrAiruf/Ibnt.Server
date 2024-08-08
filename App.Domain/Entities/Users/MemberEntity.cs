@@ -1,4 +1,5 @@
 ﻿using App.Domain.Entities.Announcement;
+using App.Domain.Entities.Department;
 using App.Domain.Entities.Reactions;
 using App.Domain.Entities.TimeLine;
 using App.Domain.Entities.Users.Auth;
@@ -24,6 +25,7 @@ namespace App.Domain.Entities.Users
         public List<EventEntity>? Events { get; set; }
         public List<BibleMessageEntity>? BibleMessages { get; set; }
         public List<AnnouncementEntity>? Announcements { get; set; }
+        public List<DepartmentEntity> Departments { get; set; }
 
         public void ChangeFullName(string? fullName)
         {
