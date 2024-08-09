@@ -74,7 +74,9 @@ namespace App.Infra.Repositories
                     _context.Department.Update(department);
                     await _context.SaveChangesAsync();
 
-                    return Tuple.Create<AppException?, DepartmentEntity?>(null, department);
+                    DepartmentEntity? updatedDepartment = await _context.Department.FindAsync(department.Id);
+
+                    return Tuple.Create<AppException?, DepartmentEntity?>(null, updatedDepartment);
 
                 }
 

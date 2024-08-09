@@ -1,7 +1,6 @@
 ﻿using App.Application.Dtos.MemberEntity;
 using App.Application.Extensions;
 using App.Application.Interfaces;
-using App.Domain.Entities.TimeLine;
 using App.Domain.Entities.Users;
 using App.Domain.Entities.Users.Auth;
 using App.Domain.Exceptions;
