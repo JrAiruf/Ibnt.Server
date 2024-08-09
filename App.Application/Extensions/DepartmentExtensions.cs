@@ -11,7 +11,7 @@ namespace App.Application.Extensions
             {
                 Id = department.Id,
                 Title = department.Title,
-                Members = department.Members.Select(m => m.AsDtoList()).ToList(),
+                Members = department.Members.Select(m => m.AsDto()).ToList(),
             };
         }
         public static DepartmentEntity FromDto(this CreateDepartmentDto dto)

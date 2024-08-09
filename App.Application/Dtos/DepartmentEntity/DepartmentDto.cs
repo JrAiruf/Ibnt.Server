@@ -6,6 +6,6 @@ namespace App.Application.Dtos.DepartmentEntity
     {
         public Guid Id { get; init; }
         public required string Title { get; init; }
-        public required List<MemberListDto> Members { get; init; }
+        public required List<MemberDto> Members { get; init; }
     }
 }
